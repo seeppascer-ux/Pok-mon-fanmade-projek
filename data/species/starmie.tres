@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/STARMIE.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/STARMIE.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 121
+species_name = "Starmie"
+pokedex_description = "Pokemon Bintang Air. Inti merahnya berdenyut seperti mengirim sinyal ke luar angkasa."
+type1 = 3
+type2 = 11
+base_hp = 60
+base_attack = 75
+base_defense = 85
+base_sp_attack = 100
+base_sp_defense = 85
+base_speed = 115
+catch_rate = 60
+base_exp_yield = 182
+growth_rate = 3
+gender_ratio = 0
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 159
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 159
+sprite_back_fps = 16.0

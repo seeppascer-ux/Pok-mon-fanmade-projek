@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://gg38o6xt2hpb"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_ehkgx"]
+[ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="2_3ll0i"]
+[ext_resource type="Texture2D" uid="uid://boq78p7fp7rq4" path="res://asset/pokemon/back/CLOYSTER.png" id="2_b88ar"]
+[ext_resource type="Texture2D" uid="uid://c60bkpplylr0e" path="res://asset/pokemon/front/CLOYSTER.png" id="2_yhgfa"]
+[ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="3_b88ar"]
+
+[resource]
+script = ExtResource("1")
+species_id = 91
+species_name = "Cloyster"
+pokedex_description = "Pokemon Bivalve. Duri-duri tajam di cangkangnya siap menusuk siapa pun yang menyerang."
+type1 = 3
+type2 = 6
+base_hp = 50
+base_attack = 95
+base_defense = 180
+base_sp_attack = 85
+base_sp_defense = 45
+base_speed = 70
+catch_rate = 60
+base_exp_yield = 184
+growth_rate = 3
+starting_moves = Array[ExtResource("3_b88ar")]([ExtResource("2"), ExtResource("3")])
+sprite_front_sheet = ExtResource("2_yhgfa")
+sprite_front_columns = 101
+sprite_front_fps = 30.0
+sprite_front_female_columns = 101
+sprite_back_sheet = ExtResource("2_b88ar")
+sprite_back_columns = 101
+sprite_back_fps = 18.0

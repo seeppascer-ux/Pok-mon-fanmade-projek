@@ -1,0 +1,105 @@
+FITUR BARU 3: PARTY SCREEN, CAMERA LIMIT MAP, POKEDEX UI
+===========================================================
+
+Paket ini adalah TAMBAHAN (patch) buat project "Pokemon U" kamu, nyambung
+di atas patch-patch sebelumnya. File baru semua -- tidak ada file lama
+yang ditimpa/dihapus, jadi aman digabung ke project yang sudah ada
+customisasi sendiri.
+
+ISI PAKET
+=========
+data/pokedex.gd                  -> class baru Pokedex (data spesies mana
+									 yang pernah dilihat/ditangkap)
+script/ui/party_menu.gd          -> layar PARTY (lihat party pemain)
+scene/party_menu.tscn            -> scene kosong yang nempelin script di atas
+script/ui/pokedex_ui.gd          -> layar POKEDEX (lihat semua spesies)
+scene/pokedex_ui.tscn            -> scene kosong yang nempelin script di atas
+script/map/world.gd              -> DITIMPA, tambah field "pokedex", tombol
+									 PARTY/DEX on-screen, dan panggilan
+									 mark_seen()/mark_caught() otomatis
+script/player/player.gd          -> DITIMPA, tambah _setup_camera_limits()
+
+
+1) PARTY SCREEN
+=================
+Tombol "PARTY" baru muncul di pojok kanan atas layar world.tscn (sebelah
+tombol DEX). Tap buat lihat semua Pokemon di party kamu (maks 6): icon,
+nama/nickname, simbol gender, level, HP bar berwarna (hijau/kuning/merah
+sesuai sisa HP persis kayak battle_ui), dan status condition kalau lagi
+kena Poison/Burn/dst. Pokemon yang pingsan kelihatan agak transparan +
+label "[Pingsan]".
+
+Seluruh isinya dibikin lewat kode di party_menu.gd (bukan digambar manual
+di .tscn), jadi tiap dibuka datanya selalu ke-refresh sesuai kondisi party
+saat itu. Tutup lewat tombol "X" di pojok kanan atas.
+
+Tidak perlu setting apa pun di Inspector -- otomatis baca field
+"Player Party" yang sudah ada di node "world".
+
+
+2) CAMERA LIMIT MAP
+======================
+Sebelumnya Camera2D milik Player cuma dikasih limit_left yang sangat besar
+(-10000001) dan sisanya masih default (limit kanan/atas/bawah bawaan
+Godot, +-10 juta pixel) -- artinya kamera sebenarnya BELUM benar-benar
+dibatasi, cuma kelihatan "aman" kalau kebetulan peta kamu juga kecil.
+
+player.gd sekarang punya _setup_camera_limits() yang jalan otomatis sekali
+di _ready(): dia baca ukuran PERSIS TileMapLayer "Worldmap" lewat
+get_used_rect(), terus set ke-4 limit Camera2D (limit_left/top/right/
+bottom) pas di pinggir peta. Efeknya kamera tidak akan lagi nampilin area
+kosong/luar peta pas player jalan mepet ke pinggir.
+
+Otomatis menyesuaikan kalau kamu edit ulang petanya (nambah/ngurangin
+tile) -- tidak perlu isi angka manual di Inspector. Kalau kamu punya
+beberapa peta/scene world berbeda dengan nama TileMapLayer beda dari
+"Worldmap", sesuaikan baris ini di player.gd:
+	@onready var tilemap: TileMapLayer = get_node("../Worldmap")
+
+
+3) POKEDEX UI
+================
+Tombol "DEX" di sebelah tombol PARTY. Tap buat buka layar Pokedex: daftar
+SEMUA spesies yang ada di res://data/species/ (diambil OTOMATIS lewat
+DirAccess, tidak perlu didaftar manual satu-satu -- nambah spesies baru
+lewat Inspector otomatis muncul di Pokedex juga), diurutkan berdasarkan
+species_id.
+
+Aturan tampilan detail (tap salah satu nama di daftar sebelah kiri):
+- Belum pernah ketemu sama sekali  -> cuma "#001  ???", tidak ada info lain.
+- Pernah ketemu (misal encounter liar) tapi belum ditangkap
+									-> nama & tipe kelihatan, tapi
+									   deskripsi & base stat masih
+									   disembunyikan ("Belum pernah
+									   ditangkap...").
+- Pernah ditangkap/dipunya          -> semua data kelihatan: icon,
+									   deskripsi Pokedex, dan base stat
+									   (HP/Attack/Defense/Sp.Atk/Sp.Def/
+									   Speed).
+
+data/pokedex.gd nyimpen 2 daftar id spesies: seen_ids & caught_ids.
+world.gd otomatis manggil:
+	pokedex.mark_seen(wild_instance.species)   -- pas mulai battle liar
+	pokedex.mark_caught(instance.species)      -- pas Poke Ball berhasil
+Pokemon yang sudah ada di player_party sejak awal (starter, dst) otomatis
+dianggap "sudah ditangkap" juga (lihat _ready() di world.gd), jadi kamu
+tidak perlu battle ulang starter-mu sendiri cuma buat ngisi Pokedex.
+
+Field "pokedex" di node "world" boleh dikosongkan (otomatis dibikin baru
+kalau kosong) atau diisi manual lewat Inspector kalau kamu mau bikin save
+data Pokedex sendiri (New Resource > "Pokedex").
+
+
+CATATAN
+========
+- Belum ada sistem save/load -- Party, Pokedex, Tas, dst semuanya masih
+  reset tiap kali game dijalankan ulang dari Godot (sama seperti fitur-
+  fitur sebelumnya).
+- Tombol PARTY/DEX otomatis ikut sembunyi pas battle aktif atau pas salah
+  satu dari menu itu sendiri lagi kebuka (dia numpang di grup tombol arah
+  U/D/L/R yang sudah ada logic sembunyi/muncul-nya).
+- UI Party/Pokedex sengaja dibikin polos (kode murni, bukan asset pixel-
+  art) supaya cepat dipasang & gampang di-custom -- kalau mau tampilan
+  yang lebih niat pakai asset "Enhanced Battle UI" atau "Pokedex Data
+  Page" yang sudah ada di folder asset/, tinggal ganti isi _build_ui()/
+  _show_detail() di script terkait.

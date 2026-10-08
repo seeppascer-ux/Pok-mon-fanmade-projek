@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/tackle.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/harden.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/CHANSEY.png" id="4"]
+
+[resource]
+script = ExtResource("1")
+species_id = 113
+species_name = "Chansey"
+pokedex_description = "Pokemon Telur. Telur yang dibawanya sangat bergizi dan dipercaya menyembuhkan luka."
+type1 = 1
+base_hp = 250
+base_attack = 5
+base_defense = 5
+base_sp_attack = 35
+base_sp_defense = 105
+base_speed = 50
+catch_rate = 30
+base_exp_yield = 395
+growth_rate = 0
+gender_ratio = 2
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 116
+sprite_front_fps = 16.0

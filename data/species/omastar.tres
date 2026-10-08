@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/rock_throw.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/OMASTAR.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/OMASTAR.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 139
+species_name = "Omastar"
+pokedex_description = "Pokemon Spiral. Cangkangnya yang berat membuatnya harus terus bergerak agar tidak tenggelam."
+type1 = 13
+type2 = 3
+base_hp = 70
+base_attack = 60
+base_defense = 125
+base_sp_attack = 115
+base_sp_defense = 70
+base_speed = 55
+catch_rate = 45
+base_exp_yield = 173
+growth_rate = 1
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 155
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 155
+sprite_back_fps = 16.0

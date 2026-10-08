@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/gust.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/harden.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/PIDGEOT.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/PIDGEOT.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 18
+species_name = "Pidgeot"
+pokedex_description = "Pokemon Burung Raksasa. Bisa terbang sangat cepat sambil mengawasi wilayahnya dari udara."
+type1 = 1
+type2 = 10
+base_hp = 83
+base_attack = 80
+base_defense = 75
+base_sp_attack = 70
+base_sp_defense = 70
+base_speed = 101
+catch_rate = 45
+base_exp_yield = 216
+growth_rate = 2
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 71
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 68
+sprite_back_fps = 16.0

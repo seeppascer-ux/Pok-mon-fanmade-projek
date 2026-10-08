@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/harden.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/TENTACRUEL.png" id="4"]
+
+[resource]
+script = ExtResource("1")
+species_id = 73
+species_name = "Tentacruel"
+pokedex_description = "Pokemon Ubur-ubur. Memiliki ratusan tentakel yang siap menyengat siapa pun yang mendekat."
+type1 = 3
+type2 = 8
+base_hp = 80
+base_attack = 70
+base_defense = 65
+base_sp_attack = 80
+base_sp_defense = 120
+base_speed = 100
+catch_rate = 60
+base_exp_yield = 180
+growth_rate = 3
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_back_sheet = ExtResource("4")
+sprite_back_columns = 80
+sprite_back_fps = 16.0

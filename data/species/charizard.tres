@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://bwhig8j4bmkd7"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_t22xn"]
+[ext_resource type="Resource" uid="uid://dwsnu7da0wea2" path="res://data/moves/ember.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
+[ext_resource type="Texture2D" uid="uid://cg83jv1m6enow" path="res://asset/pokemon/front/CHARIZARD.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://cq5307iykbx84" path="res://asset/pokemon/back/CHARIZARD.png" id="5"]
+[ext_resource type="Resource" path="res://data/abilities/blaze.tres" id="6"]
+[ext_resource type="Resource" path="res://data/abilities/solar_power.tres" id="7"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="8"]
+[ext_resource type="Resource" uid="uid://cjogtnh8ule3o" path="res://data/moves/gust.tres" id="9"]
+[ext_resource type="Resource" path="res://data/moves/bite.tres" id="10"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="10_55c3b"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("8")
+level = 44
+move = ExtResource("9")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("8")
+level = 54
+move = ExtResource("10")
+
+[resource]
+script = ExtResource("1")
+species_id = 6
+species_name = "Charizard"
+pokedex_description = "Pokemon Kadal Api. Bisa terbang tinggi dan menyemburkan api yang sangat panas dari mulutnya."
+type1 = 2
+type2 = 10
+base_hp = 78
+base_attack = 84
+base_defense = 78
+base_sp_attack = 109
+base_sp_defense = 85
+base_speed = 100
+base_exp_yield = 240
+growth_rate = 2
+starting_moves = Array[ExtResource("10_55c3b")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = Array[ExtResource("8")]([SubResource("LM1"), SubResource("LM2")])
+abilities = Array[ExtResource("1_t22xn")]([ExtResource("6")])
+hidden_ability = ExtResource("7")
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 143
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 143
+sprite_back_fps = 16.0

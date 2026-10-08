@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/confusion.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/JYNX.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/JYNX.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 124
+species_name = "Jynx"
+pokedex_description = "Pokemon Manusia Es. Bibirnya yang berwarna-warni konon terlihat seperti sedang bernyanyi."
+type1 = 6
+type2 = 11
+base_hp = 65
+base_attack = 50
+base_defense = 35
+base_sp_attack = 115
+base_sp_defense = 95
+base_speed = 95
+catch_rate = 45
+base_exp_yield = 159
+growth_rate = 1
+gender_ratio = 2
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 107
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 107
+sprite_back_fps = 16.0

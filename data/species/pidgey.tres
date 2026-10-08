@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://dx5l2geufjelc"]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/gust.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/PIDGEY.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/PIDGEY.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 16
+species_name = "Pidgey"
+pokedex_description = "Pokemon Burung Kecil. Sering terlihat mengepakkan sayap di ladang dan hutan."
+type1 = 1
+type2 = 10
+base_hp = 40
+base_attack = 45
+base_defense = 40
+base_sp_attack = 35
+base_sp_defense = 35
+base_speed = 56
+catch_rate = 255
+base_exp_yield = 50
+growth_rate = 2
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 41
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 41
+sprite_back_fps = 16.0

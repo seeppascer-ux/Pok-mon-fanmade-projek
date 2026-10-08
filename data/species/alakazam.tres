@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://oihtlojrq50h"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_nl84k"]
+[ext_resource type="Resource" path="res://data/moves/confusion.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://bunkv3x2xkx7p" path="res://asset/icons/ALAKAZAM.png" id="2_1gqk4"]
+[ext_resource type="Resource" uid="uid://lctaha2vjc7b" path="res://data/moves/growl.tres" id="3"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="3_7ctia"]
+[ext_resource type="Texture2D" uid="uid://cy6qmyhi0c0bc" path="res://asset/pokemon/front/ALAKAZAM.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://bx27lkuoctagt" path="res://asset/pokemon/back/ALAKAZAM.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://dxpkmqp1c7h71" path="res://asset/pokemon/front/ALAKAZAM_female.png" id="6"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="6_rcufv"]
+[ext_resource type="Texture2D" uid="uid://dr6why68vwjrm" path="res://asset/pokemon/back/ALAKAZAM_female.png" id="7"]
+
+[resource]
+script = ExtResource("1")
+species_id = 65
+species_name = "Alakazam"
+pokedex_description = "Pokemon Psikis. Sanggup membaca pikiran lawan sebelum mereka bertindak."
+type1 = 11
+base_hp = 55
+base_attack = 50
+base_defense = 45
+base_sp_attack = 135
+base_sp_defense = 95
+base_speed = 120
+catch_rate = 50
+base_exp_yield = 225
+growth_rate = 2
+starting_moves = Array[ExtResource("6_rcufv")]([ExtResource("2"), ExtResource("3")])
+icon = ExtResource("2_1gqk4")
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 105
+sprite_front_female_sheet = ExtResource("6")
+sprite_front_female_columns = 140
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 105
+sprite_back_fps = 16.0
+sprite_back_female_sheet = ExtResource("7")
+sprite_back_female_columns = 138
+sprite_back_female_fps = 16.0

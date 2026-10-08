@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://data/items/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+item_name = "Antidote"
+description = "Sembuhkan status keracunan (Poison)."
+category = 2
+cures_status = 1

@@ -1,0 +1,195 @@
+POKEMON U - PROJECT GODOT (LENGKAP DENGAN BATTLE SYSTEM)
+============================================================
+
+Ini project Godot 4.7 yang utuh, tinggal dibuka. Struktur data Pokemon
+(species, move, party) dan sistem battle turn-based sudah terpasang jadi
+satu -- kamu tidak perlu tempel-tempel file lagi.
+
+CARA BUKA
+=========
+1. Extract zip ini.
+2. Buka Godot 4.7, pilih "Import", arahkan ke folder hasil extract
+   (folder yang berisi project.godot).
+3. Biarkan Godot reimport semua asset & script pertama kali dibuka
+   (agak lama karena banyak tileset). Kalau muncul error
+   "Cannot find class ..." di console, coba Project > Reload Current
+   Project sekali.
+
+STRUKTUR PROJECT
+=================
+res://
+├── data/
+│   ├── types.gd            -> daftar semua tipe Pokemon (enum)
+│   ├── type_chart.gd        -> tabel keefektifan tipe (buat battle)
+│   ├── pokemon_instance.gd  -> 1 ekor Pokemon yang beneran kamu punya
+│   ├── moves/
+│   │   ├── move_data.gd     -> data 1 move (power, akurasi, PP, efek)
+│   │   ├── tackle.tres, scratch.tres, ember.tres,
+│   │   │   thundershock.tres, growl.tres
+│   ├── species/
+│   │   ├── pokemon_species.gd -> data dasar per spesies (mirip Pokedex)
+│   │   ├── charmander.tres, pikachu.tres
+│   └── party/
+│       ├── starter_charmander.tres  -> Charmander starter, level 5
+│       └── wild_pikachu.tres        -> Pikachu liar buat testing, level 4
+│
+├── battle/                  -> SISTEM BATTLE
+│   ├── battle_mon.gd         -> stat sementara (naik/turun) selama battle
+│   ├── battle_manager.gd     -> otak battle: giliran, damage, menang/kalah
+│   ├── battle_ui.gd          -> penghubung UI ke battle_manager
+│   ├── battle_ui.tscn        -> scene UI battle (HP bar, tombol move, dst)
+│   └── battle_test.tscn      -> scene siap coba: Charmander vs Pikachu liar
+│
+├── pokemon/
+│   ├── pokemon.gd + pokemon.tscn -> scene kecil buat lihat data 1 Pokemon
+│                                     di console (bukan battle)
+│
+├── player.gd + world.tscn   -> karakter jalan-jalan di atas peta + tombol
+│                                arah on-screen
+└── Autotiles/                -> semua tileset/asset map
+
+CARA COBA BATTLE SYSTEM
+=========================
+Ada 2 scene test, beda kegunaan:
+
+1. res://scene/battle_test.tscn
+   Pakai PokemonInstance beneran (file .tres di res://data/party/) --
+   cocok kalau Pokemon-nya udah punya level/HP/moves custom yang mau
+   dites persis.
+
+2. res://scene/battle_quick_test.tscn  (BARU, lebih cepat buat coba-coba)
+   Tidak perlu bikin file PokemonInstance sama sekali. Tinggal klik node
+   "battle_quick_test" di scene tree, isi 4 field di Inspector:
+	 Player Species  -> drag file species (misal charmander.tres)
+	 Player Level    -> angka level
+	 Enemy Species   -> drag file species (misal pikachu.tres)
+	 Enemy Level     -> angka level
+   Jalankan (F6), otomatis dibikinin PokemonInstance-nya di belakang
+   layar lewat PokemonInstance.from_species(). HP & moves otomatis
+   penuh/keisi sesuai species begitu battle mulai.
+
+Buka salah satu scene itu lalu jalankan (F6). Yang akan kelihatan:
+- HP bar musuh & player yang update real-time
+- Message box ("Charmander pakai Scratch!", "Sangat efektif!", dst)
+- Tombol pilihan move (lengkap sisa PP), muncul otomatis tiap giliranmu
+- Urutan gerak berdasarkan Speed (yang lebih cepat duluan)
+- Growl beneran nurunin Attack lawan 1 stage
+- Damage dihitung pakai rumus resmi Pokemon yang disederhanakan:
+  level, power, Attack/Sp.Atk vs Defense/Sp.Def, STAB (bonus 1.5x kalau
+  tipe move sama dengan tipe Pokemon), keefektifan tipe (type_chart.gd),
+  dan sedikit random (85%-100%) tiap serangan
+- Menang/kalah otomatis terdeteksi begitu salah satu pingsan
+
+CARA PAKAI BATTLE DI GAME ASLI (misal encounter Pokemon liar di world.gd)
+=============================================================================
+   var battle_scene := preload("res://battle/battle_ui.tscn").instantiate()
+   get_tree().root.add_child(battle_scene)
+   battle_scene.start(player_party[0], wild_pokemon_instance)
+
+`player_party[0]` dan `wild_pokemon_instance` sama-sama PokemonInstance,
+persis kayak yang dipakai di pokemon/pokemon.tscn atau battle_test.tscn.
+
+CARA BIKIN POKEMON / MOVE BARU
+=================================
+- Spesies baru: klik kanan res://data/species/ > New Resource >
+  cari "PokemonSpecies" > isi statnya di Inspector.
+- Move baru: sama caranya di res://data/moves/, pilih "MoveData".
+  Kalau mau move itu punya efek (naik/turun stat, heal), isi grup
+  "Efek Tambahan" di Inspector:
+	effect = STAT_CHANGE -> effect_target (SELF/ENEMY), effect_stat,
+							 effect_amount (+ naik, - turun, per stage)
+	effect = HEAL         -> effect_amount = persen max HP yang pulih
+	effect_chance          -> persen kemungkinan efeknya kena
+- 1 ekor Pokemon yang bisa dipakai di game: klik kanan res://data/party/
+  (atau folder lain) > New Resource > "PokemonInstance" > isi field
+  "species" dengan spesies yang mau dipakai, isi level-nya.
+
+BARU: ENCOUNTER POKEMON LIAR DI WORLD.TSCN (SUDAH JALAN)
+==========================================================
+world.tscn sekarang punya node "world" dengan script world.gd, dan sebuah
+contoh zona rumput tinggi bernama "RumputTinggi1" (Area2D + CollisionShape2D)
+persis di sebelah kanan titik spawn player.
+
+Cara coba:
+1. Jalankan world.tscn (F6 atau F5).
+2. Jalan ke kanan sampai masuk kotak "RumputTinggi1" (kelihatan sebagai
+   Area2D transparan di editor -- kalau mau lihat area persisnya, klik
+   node itu di scene tree).
+3. Tiap 1 langkah di dalam zona itu, ada peluang 15% ketemu Pokemon liar
+   (Rattata/Pidgey/Pikachu, level acak). Kalau kena, battle_ui otomatis
+   muncul, dan kontrol jalan player mati sementara.
+4. Battle selesai -> battle_ui otomatis hilang, kontrol player balik lagi.
+
+File baru:
+- world.gd              -> "otak" penghubung player <-> battle system
+- tall_grass_zone.gd     -> script buat Area2D zona rumput/gua/air
+- data/wild_encounter.gd -> 1 baris tabel encounter (spesies, level, weight)
+
+Cara bikin zona rumput baru:
+1. Klik kanan node "world" di scene tree > Add Child Node > Area2D.
+2. Kasih nama bebas, tempel script tall_grass_zone.gd.
+3. Tambah CollisionShape2D di dalamnya, gambar areanya di 2D viewport.
+4. Isi array "Wild Encounters" di Inspector: tiap elemen = New Resource >
+   cari "WildEncounter" > isi species, min_level, max_level, weight.
+5. Atur "Encounter Chance" (0-1) sesuai selera, misal 0.1 = 10% per langkah.
+
+Party pemain diatur lewat Inspector node "world" > field "Player Party"
+(array of PokemonInstance). Sekarang sudah diisi contoh: starter_charmander.
+Kalau party kosong, encounter tidak akan jalan (ada push_warning di console).
+
+BARU: SPRITE ANIMASI DARI SPRITESHEET (SUDAH JALAN)
+=====================================================
+Sekarang tiap PokemonSpecies bisa punya sprite ANIMASI (bukan cuma gambar
+diam) dengan cara isi spritesheet grid -- 1 gambar besar yang isinya banyak
+frame animasi (misal animasi "napas" idle) disusun rapi kolom x baris,
+ukuran tiap kotak sama rata.
+
+File baru:
+- script/sprite_sheet_util.gd  -> potong 1 spritesheet jadi AnimatedTexture
+									(Godot yang muter animasinya sendiri,
+									tidak perlu Timer/_process manual)
+
+Field baru di PokemonSpecies (res://data/species/*.tres), grup
+"Sprite Animasi (Opsional)" di Inspector:
+  Depan (musuh):
+	sprite_front_sheet        -> gambar spritesheet-nya
+	sprite_front_columns      -> jumlah kolom di grid
+	sprite_front_rows         -> jumlah baris di grid
+	sprite_front_frame_count  -> jumlah frame yang beneran dipakai
+								  (0 = otomatis columns x rows, isi manual
+								  kalau ada kotak kosong/tidak kepakai di
+								  ujung grid)
+	sprite_front_fps          -> kecepatan animasi (6-10 biasanya pas)
+  Belakang (punya player): sama persis, field-nya "sprite_back_..."
+
+CARA PAKAI
+==========
+1. Buka res://data/species/nama_pokemon.tres di Godot.
+2. Buka grup "Sprite Animasi (Opsional)" di Inspector.
+3. Drag gambar spritesheet-mu ke "Sprite Front Sheet" (buat sprite musuh)
+   dan/atau "Sprite Back Sheet" (buat sprite belakang punya player).
+4. Isi Columns & Rows sesuai grid spritesheet-nya. Contoh: spritesheet
+   4 kolom x 2 baris tapi cuma 7 frame kepakai (1 kotak terakhir kosong)
+   -> Columns=4, Rows=2, Frame Count=7.
+5. Jalankan battle_test.tscn -- sprite otomatis animasi looping selama
+   battle berlangsung, tanpa perlu ubah kode apa pun.
+
+CATATAN: kalau "Sprite Front/Back Sheet" dikosongkan, sistem otomatis
+balik pakai "Sprite Front"/"Sprite Back" biasa (gambar diam) seperti
+sebelumnya -- jadi aman untuk species yang belum punya sprite animasi.
+
+PENTING SOAL FILE SPRITE YANG HILANG
+======================================
+File charmander.png dan bulbasaur.png yang dirujuk project ini TIDAK ada
+di dalam paket ini (cuma sisa metadata .import lama) -- gambar sumbernya
+sendiri hilang. Kalau mau battle sprite Charmander/Pikachu kelihatan lagi,
+tinggal masukkan ulang gambarnya (statis atau spritesheet animasi) lewat
+Inspector di file .tres species terkait.
+
+LANGKAH SELANJUTNYA (opsional, belum dibikin)
+================================================
+- Party dengan lebih dari 1 Pokemon + ganti Pokemon di tengah battle
+- Item (Potion, Poke Ball buat nangkep)
+- Status kondisi jangka panjang (Poison, Paralyze, Burn, Sleep)
+- EXP & level up setelah menang (battle_ui.battle_ended sekarang cuma print())
+- Save/load progress

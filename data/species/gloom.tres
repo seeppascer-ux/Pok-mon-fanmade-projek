@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/vine_whip.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/GLOOM.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/GLOOM.png" id="5"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/GLOOM_female.png" id="6"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/GLOOM_female.png" id="7"]
+
+[resource]
+script = ExtResource("1")
+species_id = 44
+species_name = "Gloom"
+pokedex_description = "Pokemon Rumput Liar. Mengeluarkan bau menyengat yang bisa membuat lawan pusing."
+type1 = 4
+type2 = 8
+base_hp = 60
+base_attack = 65
+base_defense = 70
+base_sp_attack = 85
+base_sp_defense = 75
+base_speed = 40
+catch_rate = 120
+base_exp_yield = 138
+growth_rate = 2
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 98
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 95
+sprite_back_fps = 16.0
+sprite_front_female_sheet = ExtResource("6")
+sprite_front_female_columns = 98
+sprite_front_female_fps = 16.0
+sprite_back_female_sheet = ExtResource("7")
+sprite_back_female_columns = 98
+sprite_back_female_fps = 16.0

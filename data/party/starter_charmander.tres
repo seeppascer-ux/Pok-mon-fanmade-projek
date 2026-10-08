@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PokemonInstance" format=3 uid="uid://bs555k0iiuimj"]
+
+[ext_resource type="Script" uid="uid://dvhyg5pmaof1p" path="res://data/pokemon_instance.gd" id="1"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="1_r57cf"]
+[ext_resource type="Resource" uid="uid://d1k17kvalycvc" path="res://data/species/charmander.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+species = ExtResource("2")

@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://bngq7rg5jhcy8"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_tqonb"]
+[ext_resource type="Resource" path="res://data/moves/confusion.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://c1gagedidfh6i" path="res://asset/icons/ABRA.png" id="2_kqjqe"]
+[ext_resource type="Resource" path="res://data/moves/harden.tres" id="3"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="3_eqsxt"]
+[ext_resource type="Texture2D" uid="uid://i0uepic1uo8t" path="res://asset/pokemon/front/ABRA.png" id="4"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="4_so6mq"]
+[ext_resource type="Texture2D" uid="uid://ducgkt5vw2iiu" path="res://asset/pokemon/back/ABRA.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 63
+species_name = "Abra"
+pokedex_description = "Pokemon Psikis. Tidur sepanjang hari untuk mengumpulkan energi psikisnya."
+type1 = 11
+base_hp = 25
+base_attack = 20
+base_defense = 15
+base_sp_attack = 105
+base_sp_defense = 55
+base_speed = 90
+catch_rate = 200
+base_exp_yield = 62
+growth_rate = 2
+starting_moves = Array[ExtResource("4_so6mq")]([ExtResource("2"), ExtResource("3")])
+icon = ExtResource("2_kqjqe")
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 113
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 111
+sprite_back_fps = 16.0

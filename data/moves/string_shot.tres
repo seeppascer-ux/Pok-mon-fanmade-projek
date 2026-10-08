@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MoveData" format=3]
+
+[ext_resource type="Script" path="res://data/moves/move_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+move_name = "String Shot"
+type = 12
+category = 2
+power = 0
+accuracy = 95
+max_pp = 40
+description = "Menyemprotkan benang lengket untuk menurunkan Speed lawan."
+effect = 1
+effect_chance = 100
+effect_target = 1
+effect_stat = 4
+effect_amount = -1

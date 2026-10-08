@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://dxrs12ixla1yk"]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/tackle.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/RATTATA.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/RATTATA.png" id="5"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/RATTATA_female.png" id="6"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/RATTATA_female.png" id="7"]
+
+[resource]
+script = ExtResource("1")
+species_id = 19
+species_name = "Rattata"
+pokedex_description = "Pokemon Tikus. Giginya terus tumbuh sehingga suka mengerat apa saja."
+type1 = 1
+base_hp = 30
+base_attack = 56
+base_defense = 35
+base_sp_attack = 25
+base_sp_defense = 35
+base_speed = 72
+catch_rate = 255
+base_exp_yield = 51
+growth_rate = 1
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 101
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 99
+sprite_back_fps = 16.0
+sprite_front_female_sheet = ExtResource("6")
+sprite_front_female_columns = 101
+sprite_front_female_fps = 16.0
+sprite_back_female_sheet = ExtResource("7")
+sprite_back_female_columns = 100
+sprite_back_female_fps = 16.0

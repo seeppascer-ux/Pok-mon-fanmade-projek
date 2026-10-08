@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/thundershock.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/MAGNEMITE.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/MAGNEMITE.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 81
+species_name = "Magnemite"
+pokedex_description = "Pokemon Magnet. Melayang di udara berkat medan magnet yang dihasilkan tubuhnya."
+type1 = 5
+type2 = 17
+base_hp = 25
+base_attack = 35
+base_defense = 70
+base_sp_attack = 95
+base_sp_defense = 55
+base_speed = 45
+catch_rate = 190
+base_exp_yield = 65
+growth_rate = 1
+gender_ratio = 0
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 105
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 105
+sprite_back_fps = 16.0

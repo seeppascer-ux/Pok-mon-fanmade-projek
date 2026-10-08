@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://dwsnu7da0wea2"]
+
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+move_name = "Ember"
+type = 2
+category = 1
+max_pp = 25
+description = "Menyerang dengan percikan api kecil. Bisa membuat lawan terbakar."
+effect = 3
+effect_chance = 10
+effect_status = 2

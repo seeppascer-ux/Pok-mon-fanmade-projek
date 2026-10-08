@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/HORSEA.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/HORSEA.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 116
+species_name = "Horsea"
+pokedex_description = "Pokemon Naga Laut. Bersembunyi di rumput laut sambil menunggu mangsa lewat."
+type1 = 3
+base_hp = 30
+base_attack = 40
+base_defense = 70
+base_sp_attack = 70
+base_sp_defense = 25
+base_speed = 60
+catch_rate = 225
+base_exp_yield = 59
+growth_rate = 1
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 80
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 80
+sprite_back_fps = 16.0

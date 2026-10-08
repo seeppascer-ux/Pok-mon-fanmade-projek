@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/tail_whip.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/DEWGONG.png" id="4"]
+
+[resource]
+script = ExtResource("1")
+species_id = 87
+species_name = "Dewgong"
+pokedex_description = "Pokemon Anjing Laut. Tanduk di kepalanya bisa memancarkan sinar dingin yang menusuk."
+type1 = 3
+type2 = 6
+base_hp = 90
+base_attack = 70
+base_defense = 80
+base_sp_attack = 70
+base_sp_defense = 95
+base_speed = 70
+catch_rate = 75
+base_exp_yield = 166
+growth_rate = 1
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 121
+sprite_front_fps = 16.0

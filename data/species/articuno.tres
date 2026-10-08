@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://bppvuo6xlphms"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_dkwpk"]
+[ext_resource type="Resource" uid="uid://cjogtnh8ule3o" path="res://data/moves/gust.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://b7bde03ddmd" path="res://asset/icons/ARTICUNO.png" id="2_dcr3q"]
+[ext_resource type="Resource" uid="uid://l2qftndko3g2" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="3_uqr0q"]
+[ext_resource type="Texture2D" uid="uid://b5it3bdimhxrx" path="res://asset/pokemon/front/ARTICUNO.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://bi8jmgbldis18" path="res://asset/pokemon/back/ARTICUNO.png" id="5"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="7_xlx3f"]
+
+[resource]
+script = ExtResource("1")
+species_id = 144
+species_name = "Articuno"
+pokedex_description = "Pokemon Burung Beku. Kepakan sayapnya konon bisa menurunkan suhu udara secara drastis."
+type1 = 6
+type2 = 10
+base_hp = 90
+base_attack = 85
+base_defense = 100
+base_sp_attack = 95
+base_sp_defense = 125
+base_speed = 85
+catch_rate = 3
+base_exp_yield = 261
+growth_rate = 3
+gender_ratio = 0
+starting_moves = Array[ExtResource("7_xlx3f")]([ExtResource("2"), ExtResource("3")])
+icon = ExtResource("2_dcr3q")
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 51
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 51
+sprite_back_fps = 16.0

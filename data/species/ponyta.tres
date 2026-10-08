@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/ember.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/tail_whip.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/PONYTA.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/PONYTA.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 77
+species_name = "Ponyta"
+pokedex_description = "Pokemon Kuda Api. Bara api di kakinya membuat setiap langkahnya meninggalkan jejak api kecil."
+type1 = 2
+base_hp = 50
+base_attack = 85
+base_defense = 55
+base_sp_attack = 65
+base_sp_defense = 65
+base_speed = 90
+catch_rate = 190
+base_exp_yield = 82
+growth_rate = 1
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 91
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 91
+sprite_back_fps = 16.0

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/poison_sting.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/NIDORANF.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/NIDORANfE.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 29
+species_name = "Nidoran-f"
+pokedex_description = "Pokemon Racun Berduri. Meski bertubuh kecil, duri di kepalanya mengandung racun yang cukup kuat."
+type1 = 8
+base_hp = 55
+base_attack = 47
+base_defense = 52
+base_sp_attack = 40
+base_sp_defense = 40
+base_speed = 41
+catch_rate = 235
+base_exp_yield = 55
+growth_rate = 2
+gender_ratio = 2
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 89
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 82
+sprite_back_fps = 16.0

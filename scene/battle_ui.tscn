@@ -1,0 +1,323 @@
+[gd_scene format=3 uid="uid://b6ox12u6f4jnl"]
+
+[ext_resource type="Script" uid="uid://ocosmjjupm5n" path="res://script/battle_ui.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://duqyq32c4r3q0" path="res://asset/Battlebacks/Monte_bg.png" id="2_bg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info_panel"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.976471, 0.976471, 0.945098, 0.94902)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.14902, 0.196078, 0.298039, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 4
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bottom_panel"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.976471, 0.976471, 0.988235, 0.972549)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.14902, 0.196078, 0.298039, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 5
+shadow_offset = Vector2(0, 3)
+
+[node name="BattleUI" type="Control" unique_id=229184622]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="TextureRect" parent="." unique_id=299660434]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="EnemySprite" type="TextureRect" parent="." unique_id=318431069]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.611
+anchor_top = 0.049000002
+anchor_right = 0.924
+anchor_bottom = 0.44400004
+offset_left = -7.8720093
+offset_top = 40.248
+offset_right = 0.1920166
+offset_bottom = -8.35202
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlayerSprite" type="TextureRect" parent="." unique_id=889170925]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.06
+anchor_top = 0.32
+anchor_right = 0.44
+anchor_bottom = 0.72
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EnemyPanel" type="PanelContainer" parent="." unique_id=611963738]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.04
+anchor_right = 0.54
+anchor_bottom = 0.23
+offset_right = -70.08002
+offset_bottom = -27.040009
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_info_panel")
+
+[node name="Margin" type="MarginContainer" parent="EnemyPanel" unique_id=1777698715]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="EnemyPanel/Margin" unique_id=1831913963]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="HeaderRow" type="HBoxContainer" parent="EnemyPanel/Margin/VBox" unique_id=155231068]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="EnemyPanel/Margin/VBox/HeaderRow" unique_id=861415253]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Enemy"
+
+[node name="LevelLabel" type="Label" parent="EnemyPanel/Margin/VBox/HeaderRow" unique_id=537649072]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Lv.5"
+
+[node name="HPRow" type="HBoxContainer" parent="EnemyPanel/Margin/VBox" unique_id=1759528674]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HPLabel" type="Label" parent="EnemyPanel/Margin/VBox/HPRow" unique_id=1026583623]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.65, 0.15, 1)
+theme_override_font_sizes/font_size = 16
+text = "HP"
+
+[node name="HPBar" type="ProgressBar" parent="EnemyPanel/Margin/VBox/HPRow" unique_id=2099968591]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+show_percentage = false
+
+[node name="HPNumberLabel" type="Label" parent="EnemyPanel/Margin/VBox" unique_id=1492364382]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 14
+text = "0 / 0"
+horizontal_alignment = 2
+
+[node name="PlayerPanel" type="PanelContainer" parent="." unique_id=93793520]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.46
+anchor_top = 0.4
+anchor_right = 0.97
+anchor_bottom = 0.6
+offset_left = 110.08002
+offset_top = 45.799988
+offset_right = 9.0
+offset_bottom = 11.199982
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_info_panel")
+
+[node name="Margin" type="MarginContainer" parent="PlayerPanel" unique_id=736815611]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="PlayerPanel/Margin" unique_id=331176318]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="HeaderRow" type="HBoxContainer" parent="PlayerPanel/Margin/VBox" unique_id=187427078]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="PlayerPanel/Margin/VBox/HeaderRow" unique_id=197789364]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Player"
+
+[node name="LevelLabel" type="Label" parent="PlayerPanel/Margin/VBox/HeaderRow" unique_id=123120072]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Lv.5"
+
+[node name="HPRow" type="HBoxContainer" parent="PlayerPanel/Margin/VBox" unique_id=1941353457]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HPLabel" type="Label" parent="PlayerPanel/Margin/VBox/HPRow" unique_id=1641247514]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.65, 0.15, 1)
+theme_override_font_sizes/font_size = 16
+text = "HP"
+
+[node name="HPBar" type="ProgressBar" parent="PlayerPanel/Margin/VBox/HPRow" unique_id=1009634813]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+show_percentage = false
+
+[node name="HPNumberLabel" type="Label" parent="PlayerPanel/Margin/VBox" unique_id=2010439500]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 14
+text = "0 / 0"
+horizontal_alignment = 2
+
+[node name="BottomArea" type="Control" parent="." unique_id=748268393]
+layout_mode = 1
+anchor_left = 0.02
+anchor_top = 0.68
+anchor_right = 0.98
+anchor_bottom = 0.97
+offset_left = -15.039999
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MessageBox" type="PanelContainer" parent="BottomArea" unique_id=25004075]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bottom_panel")
+
+[node name="MessageMargin" type="MarginContainer" parent="BottomArea/MessageBox" unique_id=222004156]
+layout_mode = 2
+
+[node name="MessageLabel" type="Label" parent="BottomArea/MessageBox/MessageMargin" unique_id=997084525]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "..."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MainMenu" type="PanelContainer" parent="BottomArea" unique_id=530671520]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bottom_panel")
+
+[node name="MainMenuMargin" type="MarginContainer" parent="BottomArea/MainMenu" unique_id=1504995611]
+layout_mode = 2
+
+[node name="MainMenuVBox" type="VBoxContainer" parent="BottomArea/MainMenu/MainMenuMargin" unique_id=255895932]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PromptLabel" type="Label" parent="BottomArea/MainMenu/MainMenuMargin/MainMenuVBox" unique_id=1477547223]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Apa yang akan dilakukan?"
+autowrap_mode = 3
+
+[node name="ActionGrid" type="GridContainer" parent="BottomArea/MainMenu/MainMenuMargin/MainMenuVBox" unique_id=913853605]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="FightButton" type="Button" parent="BottomArea/MainMenu/MainMenuMargin/MainMenuVBox/ActionGrid" unique_id=1782363740]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "FIGHT"
+
+[node name="BagButton" type="Button" parent="BottomArea/MainMenu/MainMenuMargin/MainMenuVBox/ActionGrid" unique_id=1568440847]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "BAG"
+
+[node name="PokemonButton" type="Button" parent="BottomArea/MainMenu/MainMenuMargin/MainMenuVBox/ActionGrid" unique_id=74207273]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "POKEMON"
+
+[node name="RunButton" type="Button" parent="BottomArea/MainMenu/MainMenuMargin/MainMenuVBox/ActionGrid" unique_id=2029073964]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "RUN"
+
+[node name="MoveMenu" type="PanelContainer" parent="BottomArea" unique_id=1413199895]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bottom_panel")
+
+[node name="MoveMenuMargin" type="MarginContainer" parent="BottomArea/MoveMenu" unique_id=1514286541]
+layout_mode = 2
+
+[node name="MoveMenuVBox" type="VBoxContainer" parent="BottomArea/MoveMenu/MoveMenuMargin" unique_id=338230591]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MoveGrid" type="GridContainer" parent="BottomArea/MoveMenu/MoveMenuMargin/MoveMenuVBox" unique_id=1999586129]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="BackButton" type="Button" parent="BottomArea/MoveMenu/MoveMenuMargin/MoveMenuVBox" unique_id=858894350]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+text = "Kembali"

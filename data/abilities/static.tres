@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AbilityData" format=3]
+
+[ext_resource type="Script" path="res://data/abilities/ability_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+ability_name = "Static"
+description = "Konon punya peluang membuat lawan paralisis kalau kena serangan kontak (belum ada efek otomatis di battle, baru data)."

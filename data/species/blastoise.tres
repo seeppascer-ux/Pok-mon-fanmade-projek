@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/BLASTOISE.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/BLASTOISE.png" id="5"]
+[ext_resource type="Resource" path="res://data/abilities/torrent.tres" id="6"]
+[ext_resource type="Resource" path="res://data/abilities/rain_dish.tres" id="7"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="8"]
+[ext_resource type="Resource" path="res://data/moves/bite.tres" id="9"]
+[ext_resource type="Resource" path="res://data/moves/rock_throw.tres" id="10"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("8")
+level = 44
+move = ExtResource("9")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("8")
+level = 54
+move = ExtResource("10")
+
+[resource]
+script = ExtResource("1")
+species_id = 9
+species_name = "Blastoise"
+pokedex_description = "Pokemon Kura-kura Raksasa. Menyemprotkan air bertekanan tinggi lewat meriam di cangkangnya."
+type1 = 3
+base_hp = 79
+base_attack = 83
+base_defense = 100
+base_sp_attack = 85
+base_sp_defense = 105
+base_speed = 78
+catch_rate = 45
+base_exp_yield = 239
+growth_rate = 2
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 122
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 244
+sprite_back_fps = 16.0
+level_up_moves = [SubResource("LM1"), SubResource("LM2")]
+abilities = [ExtResource("6")]
+hidden_ability = ExtResource("7")
+evolution_level = 0

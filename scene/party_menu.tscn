@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dscnve3n2fi1v"]
+
+[ext_resource type="Script" uid="uid://d35cq5ctfsupl" path="res://script/ui/party_menu.gd" id="1_party"]
+
+[node name="PartyMenu" type="Control" unique_id=10390974]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -225.0
+offset_bottom = -225.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_party")

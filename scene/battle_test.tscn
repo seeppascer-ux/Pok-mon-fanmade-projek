@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bgox0ho5mmku3"]
+
+[ext_resource type="PackedScene" uid="uid://b6ox12u6f4jnl" path="res://scene/battle_ui.tscn" id="1"]
+[ext_resource type="Resource" uid="uid://igitde0wfuyt" path="res://data/party/wild_pikachu.tres" id="3"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="3_hyxxc"]
+[ext_resource type="Resource" uid="uid://d1k17kvalycvc" path="res://data/species/charmander.tres" id="4_hyxxc"]
+[ext_resource type="Script" uid="uid://dvhyg5pmaof1p" path="res://data/pokemon_instance.gd" id="4_yfokt"]
+
+[sub_resource type="Resource" id="Resource_yfokt"]
+script = ExtResource("4_yfokt")
+species = ExtResource("4_hyxxc")
+
+[node name="battle_test" unique_id=177101385 instance=ExtResource("1")]
+player_pokemon = SubResource("Resource_yfokt")
+enemy_pokemon = ExtResource("3")
+
+[node name="EnemySprite" parent="." index="1" unique_id=318431069]
+anchor_left = 0.57600003
+anchor_bottom = 0.462
+offset_left = -0.552063
+offset_top = -26.84
+offset_bottom = -53.376007

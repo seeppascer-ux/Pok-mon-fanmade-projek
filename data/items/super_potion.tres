@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://data/items/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+item_name = "Super Potion"
+description = "Pulihkan 60 HP Pokemon."
+category = 1
+heal_amount = 60

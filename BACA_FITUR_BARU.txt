@@ -1,0 +1,171 @@
+FITUR BARU: LEARNSET PER LEVEL, EVOLUTION, ABILITY, NATURE
+============================================================
+
+Paket ini adalah TAMBAHAN (patch) buat project "Pokemon U" kamu, bukan
+project lengkap baru. Cara pasang:
+
+1. Extract isi zip ini.
+2. Copy semua folder/file di dalamnya LANGSUNG ke folder project Godot
+   kamu (yang ada file project.godot-nya), timpa file yang sudah ada
+   kalau ditanya (data/species/pokemon_species.gd dan
+   data/pokemon_instance.gd memang sengaja ditimpa -- isinya sudah
+   termasuk kode lama + fitur baru).
+3. Buka Godot, biarkan reimport, lalu Project > Reload Current Project
+   kalau ada error "Cannot find class" di console (soalnya ada class baru:
+   AbilityData, LevelUpMove, Natures).
+
+ISI PAKET
+=========
+data/abilities/ability_data.gd   -> class baru AbilityData (nama + deskripsi)
+data/abilities/*.tres            -> 12 contoh ability jadi (Overgrow, Blaze,
+                                     Torrent, Static, Chlorophyll, Lightning
+                                     Rod, dll)
+data/moves/level_up_move.gd      -> class baru LevelUpMove (1 baris di
+                                     learnset: level + move)
+data/species/pokemon_species.gd  -> DITIMPA, tambah field/fungsi baru
+data/pokemon_instance.gd         -> DITIMPA, tambah field/fungsi baru
+data/natures.gd                  -> class baru Natures (25 nature + rumus)
+data/species/bulbasaur.tres, ivysaur.tres, venusaur.tres,
+             charmander.tres, charmeleon.tres, charizard.tres,
+             squirtle.tres, wartortle.tres, blastoise.tres,
+             pikachu.tres, raichu.tres
+                                  -> DITIMPA, jadi CONTOH JADI biar kamu
+                                     lihat langsung isinya di Inspector
+                                     (learnset, ability, evolusi sudah keisi)
+
+Semua .tres species LAIN (Rattata, Pidgey, dst) TIDAK diubah -- masih
+kosong (level_up_moves=[], abilities=[], evolves_into=null) sampai kamu isi
+sendiri lewat Inspector, caranya ada di bagian "CARA ISI KE SEMUA POKEMON
+LAINNYA" di bawah.
+
+
+1) LEARNSET PER LEVEL
+======================
+Field baru di PokemonSpecies: "Learnset (Level Up)" > level_up_moves
+(Array of LevelUpMove). Tiap elemen isinya cuma 2 field: level + move.
+
+Cara isi lewat Inspector:
+1. Buka res://data/species/nama_pokemon.tres
+2. Buka grup "Learnset (Level Up)"
+3. Klik "Add Element" di array level_up_moves, pilih New Resource >
+   "LevelUpMove"
+4. Isi "Level" (level dipelajari) dan drag file move-nya (.tres di
+   res://data/moves/) ke field "Move"
+5. Ulangi buat tiap move yang mau dipelajari
+
+Cara pakai di kode (misal pas menang battle & Pokemon naik level):
+	var pesan := my_pokemon.level_up()
+	for p in pesan:
+		print(p)   # atau tampilkan ke message box battle_ui, satu-satu
+
+level_up() otomatis:
+- Naikin PokemonInstance.level +1
+- Cek species.level_up_moves, kalau ada yang levelnya PAS SAMA dengan
+  level baru -> otomatis ditambah ke moves[] (kalau slotnya masih <4)
+- Kalau slot moves udah penuh (4), move baru DILEWATI (belum ada UI milih
+  "lupain move mana", cuma dikasih pesan doang)
+
+Kalau mau tahu semua move yang SEHARUSNYA sudah dikuasai kalau ditangkap
+langsung di level tinggi (misal buat isi party trainer musuh), pakai:
+	var moves := my_species.get_moves_known_at(30)  # array MoveData
+
+
+2) EVOLUTION
+=============
+Field baru di PokemonSpecies, grup "Evolusi":
+- evolves_into      -> drag file species.tres hasil evolusinya (kosongkan
+                        kalau tidak berevolusi)
+- evolution_level    -> level minimum evolusi otomatis lewat naik level.
+                        ISI 0 kalau evolusinya BUKAN lewat level (misal
+                        pakai Batu Petir/Batu Air/trade) -- field
+                        evolves_into tetap boleh diisi, cuma tidak akan
+                        ke-trigger otomatis, jadi kamu panggil manual pas
+                        item dipakai.
+
+Cara pakai di kode -- taruh SETELAH level_up():
+	var pesan := my_pokemon.level_up()
+	var hasil_evo := my_pokemon.check_evolution()
+	if hasil_evo != null:
+		# tampilkan animasi/dialog "X sedang berevolusi!" kalau mau,
+		# baru panggil evolve() beneran gantiin speciesnya:
+		my_pokemon.evolve()
+		pesan.append("%s berevolusi jadi %s!" % [
+			my_pokemon.get_display_name(), hasil_evo.species_name
+		])
+
+Evolusi lewat item (Batu Petir dkk, evolution_level = 0) -- contoh kode
+manual (dipanggil pas item dipakai ke Pikachu, tidak lewat level_up()):
+	if pikachu_instance.species.evolves_into != null:
+		pikachu_instance.species = pikachu_instance.species.evolves_into
+
+Catatan: evolve() cuma ganti species & stat dasar -- level, nickname,
+IV/EV, nature, gender, dan moves yang sudah dipunya TETAP. HP saat ini
+disesuaikan proporsional (persen HP sebelum & sesudah evolusi sama).
+
+Contoh sudah jadi: Bulbasaur->Ivysaur (lvl 16)->Venusaur (lvl 32),
+Charmander->Charmeleon (lvl 16)->Charizard (lvl 36),
+Squirtle->Wartortle (lvl 16)->Blastoise (lvl 36),
+Pikachu->Raichu (evolves_into keisi, evolution_level 0 karena aslinya
+lewat Batu Petir, bukan level).
+
+
+3) ABILITY
+===========
+Class baru: AbilityData (cuma nama + deskripsi, res://data/abilities/).
+Field baru di PokemonSpecies, grup "Ability":
+- abilities        -> array AbilityData, boleh isi lebih dari 1 (nanti
+                       dipilih ACAK 1 pas Pokemon baru dibuat)
+- hidden_ability    -> 1 ability opsional/langka (belum ada sistem "peluang
+                        muncul" khusus, baru sekadar tempat nyimpen data)
+
+Field baru di PokemonInstance: "ability" (diisi OTOMATIS oleh
+setup_default() dari salah satu species.abilities, kalau belum diisi
+manual duluan).
+
+Cara bikin ability baru:
+1. Klik kanan res://data/abilities/ > New Resource > cari "AbilityData"
+2. Isi "Ability Name" dan "Description"
+
+PENTING: ability di paket ini BARU DATA (nempel doang), belum ada efek
+otomatis di battle_manager.gd (misal Blaze belum beneran naikin power
+move Api). Kalau mau efeknya jalan beneran, tambah pengecekan manual di
+battle_manager.gd, misal:
+	if attacker.ability != null and attacker.ability.ability_name == "Blaze" \
+			and attacker.current_hp <= attacker.max_hp() / 3.0 \
+			and move.type == Types.Type.FIRE:
+		power *= 1.5
+
+
+4) NATURE
+==========
+Class baru: Natures (res://data/natures.gd) -- BUKAN Resource, jadi tidak
+perlu bikin file .tres. Berisi 25 nature persis kayak game asli, tiap
+nature naikin 1 stat +10% & nurunin 1 stat lain -10% (HP tidak pernah
+kena pengaruh nature). 5 nature netral (Hardy/Docile/Serious/
+Bashful/Quirky) tidak ngaruh apa-apa.
+
+Field baru di PokemonInstance: "nature" (int, index Natures.Nature).
+Di-ROLL OTOMATIS ACAK oleh setup_default() kalau belum diisi (nilai awal
+-1). Kalau mau nature TERTENTU (misal buat Pokemon give-away/trainer
+penting), isi manual di Inspector file PokemonInstance-nya, contoh:
+	nature = 15   # 15 = Natures.Nature.MODEST (lihat urutan enum di
+	              #  data/natures.gd)
+
+Nature otomatis dipakai di attack()/defense()/sp_attack()/sp_defense()/
+speed() -- tidak perlu ubah kode lain, stat yang dihitung sudah termasuk
+bonus/malus nature.
+
+Cara nampilin nama nature ke UI:
+	label.text = Natures.get_name(my_pokemon.nature)   # misal "Modest"
+
+
+CARA ISI KE SEMUA POKEMON LAINNYA (Rattata, Pidgey, dst)
+==========================================================
+Semua fitur di atas cuma nambah GRUP BARU di Inspector -- caranya SAMA
+persis dengan cara bikin Pokemon baru yang sudah dijelaskan di
+BACA_DULU.txt, tinggal:
+1. Buka res://data/species/nama_pokemon.tres
+2. Isi grup "Learnset (Level Up)", "Ability", "Evolusi" di Inspector
+   (drag file .tres yang relevan, sesuai contoh 11 file di atas)
+Tidak perlu koding tambahan sama sekali -- 11 file contoh di paket ini
+bisa dipakai sebagai referensi kalau bingung format datanya.

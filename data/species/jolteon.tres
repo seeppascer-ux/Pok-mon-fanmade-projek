@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/thundershock.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/growl.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/JOLTEON.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/JOLTEON.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 135
+species_name = "Jolteon"
+pokedex_description = "Pokemon Kilat. Bulu-bulu di tubuhnya berdiri tegak setiap kali mengumpulkan listrik statis."
+type1 = 5
+base_hp = 65
+base_attack = 65
+base_defense = 60
+base_sp_attack = 110
+base_sp_defense = 95
+base_speed = 130
+catch_rate = 45
+base_exp_yield = 184
+growth_rate = 1
+gender_ratio = 4
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 99
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 99
+sprite_back_fps = 16.0

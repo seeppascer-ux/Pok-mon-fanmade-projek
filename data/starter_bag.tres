@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Bag" format=3]
+
+[ext_resource type="Script" path="res://data/bag.gd" id="1"]
+[ext_resource type="Script" path="res://data/items/bag_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/items/poke_ball.tres" id="3"]
+[ext_resource type="Resource" path="res://data/items/potion.tres" id="4"]
+[ext_resource type="Resource" path="res://data/items/antidote.tres" id="5"]
+
+[sub_resource type="Resource" id="Slot1"]
+script = ExtResource("2")
+item = ExtResource("3")
+quantity = 5
+
+[sub_resource type="Resource" id="Slot2"]
+script = ExtResource("2")
+item = ExtResource("4")
+quantity = 3
+
+[sub_resource type="Resource" id="Slot3"]
+script = ExtResource("2")
+item = ExtResource("5")
+quantity = 1
+
+[resource]
+script = ExtResource("1")
+slots = [SubResource("Slot1"), SubResource("Slot2"), SubResource("Slot3")]

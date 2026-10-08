@@ -1,0 +1,61 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://d1k17kvalycvc"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_1yptp"]
+[ext_resource type="Resource" uid="uid://dwsnu7da0wea2" path="res://data/moves/ember.tres" id="2"]
+[ext_resource type="Resource" uid="uid://l2qftndko3g2" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Texture2D" uid="uid://bihlnvaj0c3pm" path="res://asset/pokemon/front/CHARMANDER.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://xsejsygn4utj" path="res://asset/pokemon/back/CHARMANDER.png" id="5"]
+[ext_resource type="Resource" path="res://data/abilities/blaze.tres" id="6"]
+[ext_resource type="Resource" path="res://data/abilities/solar_power.tres" id="7"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="8"]
+[ext_resource type="Resource" uid="uid://ovw3l7lvgb8k" path="res://data/moves/scratch.tres" id="9"]
+[ext_resource type="Resource" uid="uid://lctaha2vjc7b" path="res://data/moves/growl.tres" id="10"]
+[ext_resource type="Resource" path="res://data/moves/leer.tres" id="11"]
+[ext_resource type="Resource" uid="uid://c5vdy1u6ekdue" path="res://data/species/charmeleon.tres" id="12"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="13_yuxux"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("8")
+move = ExtResource("9")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("8")
+level = 4
+move = ExtResource("10")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("8")
+level = 8
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("8")
+level = 12
+move = ExtResource("11")
+
+[resource]
+script = ExtResource("1")
+species_id = 4
+species_name = "Charmander"
+pokedex_description = "Pokemon Kadal Api. Nyala api di ujung ekornya menunjukkan kondisi kesehatannya."
+type1 = 2
+base_hp = 39
+base_attack = 52
+base_defense = 43
+base_sp_attack = 60
+base_sp_defense = 50
+base_speed = 65
+base_exp_yield = 62
+growth_rate = 2
+starting_moves = Array[ExtResource("13_yuxux")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = Array[ExtResource("8")]([SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4")])
+abilities = Array[ExtResource("1_1yptp")]([ExtResource("6")])
+hidden_ability = ExtResource("7")
+evolves_into = ExtResource("12")
+evolution_level = 16
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 107
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 107
+sprite_back_fps = 16.0

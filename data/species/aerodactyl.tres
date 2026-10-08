@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://cxp0ubecekg66"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_7fu47"]
+[ext_resource type="Resource" path="res://data/moves/rock_throw.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://vmb3ihu6ge76" path="res://asset/icons/AERODACTYL.png" id="2_em3qc"]
+[ext_resource type="Resource" path="res://data/moves/tail_whip.tres" id="3"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="3_yuy5m"]
+[ext_resource type="Texture2D" uid="uid://ncgo67jlloea" path="res://asset/pokemon/front/AERODACTYL.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://bp5400kf7r71p" path="res://asset/pokemon/back/AERODACTYL.png" id="5"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="7_1qnrm"]
+
+[resource]
+script = ExtResource("1")
+species_id = 142
+species_name = "Aerodactyl"
+pokedex_description = "Pokemon Fosil. Dulu dikenal sebagai penguasa langit purba sebelum akhirnya punah."
+type1 = 13
+type2 = 10
+base_hp = 80
+base_attack = 105
+base_defense = 65
+base_sp_attack = 60
+base_sp_defense = 75
+base_speed = 130
+base_exp_yield = 180
+growth_rate = 3
+starting_moves = Array[ExtResource("7_1qnrm")]([ExtResource("2"), ExtResource("3")])
+icon = ExtResource("2_em3qc")
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 17
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 17
+sprite_back_fps = 16.0

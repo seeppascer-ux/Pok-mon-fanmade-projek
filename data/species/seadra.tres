@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/tail_whip.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/SEADRA.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/SEADRA.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 117
+species_name = "Seadra"
+pokedex_description = "Pokemon Naga Laut. Bisa menembakkan tinta sekaligus semburan air dari mulutnya."
+type1 = 3
+base_hp = 55
+base_attack = 65
+base_defense = 95
+base_sp_attack = 95
+base_sp_defense = 45
+base_speed = 85
+catch_rate = 75
+base_exp_yield = 154
+growth_rate = 1
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 64
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 64
+sprite_back_fps = 16.0

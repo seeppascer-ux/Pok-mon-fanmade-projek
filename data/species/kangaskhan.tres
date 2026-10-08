@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/tackle.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/growl.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/KANGASKHAN.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/KANGASKHAN.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 115
+species_name = "Kangaskhan"
+pokedex_description = "Pokemon Induk. Membawa anaknya di dalam kantung di perutnya ke mana pun ia pergi."
+type1 = 1
+base_hp = 105
+base_attack = 95
+base_defense = 80
+base_sp_attack = 40
+base_sp_defense = 80
+base_speed = 90
+catch_rate = 45
+base_exp_yield = 172
+growth_rate = 1
+gender_ratio = 2
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 115
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 117
+sprite_back_fps = 16.0

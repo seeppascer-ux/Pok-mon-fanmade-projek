@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://c5vdy1u6ekdue"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_87mk0"]
+[ext_resource type="Resource" uid="uid://dwsnu7da0wea2" path="res://data/moves/ember.tres" id="2"]
+[ext_resource type="Resource" uid="uid://lctaha2vjc7b" path="res://data/moves/growl.tres" id="3"]
+[ext_resource type="Texture2D" uid="uid://yxnxxg8f2rmm" path="res://asset/pokemon/front/CHARMELEON.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://devmhqh45sgiv" path="res://asset/pokemon/back/CHARMELEON.png" id="5"]
+[ext_resource type="Resource" path="res://data/abilities/blaze.tres" id="6"]
+[ext_resource type="Resource" path="res://data/abilities/solar_power.tres" id="7"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="8"]
+[ext_resource type="Resource" uid="uid://l2qftndko3g2" path="res://data/moves/quick_attack.tres" id="9"]
+[ext_resource type="Resource" path="res://data/moves/bite.tres" id="10"]
+[ext_resource type="Resource" uid="uid://bwhig8j4bmkd7" path="res://data/species/charizard.tres" id="11"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="11_7sur6"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("8")
+level = 20
+move = ExtResource("9")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("8")
+level = 22
+move = ExtResource("10")
+
+[resource]
+script = ExtResource("1")
+species_id = 5
+species_name = "Charmeleon"
+pokedex_description = "Pokemon Kadal Api. Ekor apinya membesar dan sayapnya mulai tumbuh di punggung."
+type1 = 2
+base_hp = 58
+base_attack = 64
+base_defense = 58
+base_sp_attack = 80
+base_speed = 80
+base_exp_yield = 142
+growth_rate = 2
+starting_moves = Array[ExtResource("11_7sur6")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = Array[ExtResource("8")]([SubResource("LM1"), SubResource("LM2")])
+abilities = Array[ExtResource("1_87mk0")]([ExtResource("6")])
+hidden_ability = ExtResource("7")
+evolves_into = ExtResource("11")
+evolution_level = 36
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 89
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 89
+sprite_back_fps = 16.0

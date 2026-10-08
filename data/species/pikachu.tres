@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3 uid="uid://drrf4fn0wrh22"]
+
+[ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_maw5u"]
+[ext_resource type="Resource" uid="uid://cqcjiyabjlf2i" path="res://data/moves/thundershock.tres" id="2"]
+[ext_resource type="Resource" uid="uid://lctaha2vjc7b" path="res://data/moves/growl.tres" id="3"]
+[ext_resource type="Texture2D" uid="uid://lr4idnmebla" path="res://asset/pokemon/front/PIKACHU.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://o4jjfko1tquy" path="res://asset/pokemon/back/PIKACHU.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://bqyui2y0r4n61" path="res://asset/pokemon/front/PIKACHU_female.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://dvda6kyc6f4x0" path="res://asset/pokemon/back/PIKACHU_female.png" id="7"]
+[ext_resource type="Resource" path="res://data/abilities/static.tres" id="8"]
+[ext_resource type="Resource" path="res://data/abilities/lightning_rod.tres" id="9"]
+[ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="10"]
+[ext_resource type="Resource" uid="uid://l2qftndko3g2" path="res://data/moves/quick_attack.tres" id="11"]
+[ext_resource type="Resource" path="res://data/moves/tail_whip.tres" id="12"]
+[ext_resource type="Resource" uid="uid://dv15yglrrq4s6" path="res://data/species/raichu.tres" id="13"]
+[ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="15_scqad"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("10")
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("10")
+level = 5
+move = ExtResource("3")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("10")
+level = 9
+move = ExtResource("11")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("10")
+level = 13
+move = ExtResource("12")
+
+[resource]
+script = ExtResource("1")
+species_id = 25
+species_name = "Pikachu"
+pokedex_description = "Pokemon Tikus Listrik. Menyimpan listrik di kantung pipinya."
+type1 = 5
+base_hp = 35
+base_attack = 55
+base_defense = 40
+base_sp_attack = 50
+base_sp_defense = 50
+base_speed = 90
+catch_rate = 190
+base_exp_yield = 112
+gender_ratio = 4
+starting_moves = Array[ExtResource("15_scqad")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = Array[ExtResource("10")]([SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4")])
+abilities = Array[ExtResource("1_maw5u")]([ExtResource("8")])
+hidden_ability = ExtResource("9")
+evolves_into = ExtResource("13")
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 112
+sprite_front_female_sheet = ExtResource("6")
+sprite_front_female_columns = 56
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 113
+sprite_back_fps = 16.0
+sprite_back_female_sheet = ExtResource("7")
+sprite_back_female_columns = 57
+sprite_back_female_fps = 16.0

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://data/items/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+item_name = "Great Ball"
+description = "Poke Ball versi lebih bagus, peluang tangkap 1.5x lebih tinggi."
+category = 0
+catch_multiplier = 1.5

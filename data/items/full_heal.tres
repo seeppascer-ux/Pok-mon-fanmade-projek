@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://data/items/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+item_name = "Full Heal"
+description = "Sembuhkan status apa pun (Poison, Burn, Paralysis, Sleep, Freeze)."
+category = 2
+cures_all_status = true

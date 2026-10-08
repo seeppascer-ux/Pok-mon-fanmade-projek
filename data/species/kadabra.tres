@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/confusion.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/KADABRA.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/KADABRA.png" id="5"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/KADABRA_female.png" id="6"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/KADABRA_female.png" id="7"]
+
+[resource]
+script = ExtResource("1")
+species_id = 64
+species_name = "Kadabra"
+pokedex_description = "Pokemon Psikis. Bisa memindahkan benda kecil hanya dengan kekuatan pikirannya."
+type1 = 11
+base_hp = 40
+base_attack = 35
+base_defense = 30
+base_sp_attack = 120
+base_sp_defense = 70
+base_speed = 105
+catch_rate = 100
+base_exp_yield = 140
+growth_rate = 2
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 118
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 121
+sprite_back_fps = 16.0
+sprite_front_female_sheet = ExtResource("6")
+sprite_front_female_columns = 118
+sprite_front_female_fps = 16.0
+sprite_back_female_sheet = ExtResource("7")
+sprite_back_female_columns = 120
+sprite_back_female_fps = 16.0

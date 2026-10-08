@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bray8qx3g1fwp"]
+
+[ext_resource type="Script" uid="uid://dcqycilci3j5n" path="res://script/battle/battle_quick_test.gd" id="1"]
+[ext_resource type="Resource" uid="uid://gg38o6xt2hpb" path="res://data/species/cloyster.tres" id="2_6ekjv"]
+
+[node name="battle_quick_test" type="Node" unique_id=232008829]
+script = ExtResource("1")
+player_species = ExtResource("2_6ekjv")
+enemy_species = ExtResource("2_6ekjv")

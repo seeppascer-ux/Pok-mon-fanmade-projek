@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/string_shot.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/harden.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/SCYTHER.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/SCYTHER.png" id="5"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/SCYTHER_female.png" id="6"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/SCYTHER_female.png" id="7"]
+
+[resource]
+script = ExtResource("1")
+species_id = 123
+species_name = "Scyther"
+pokedex_description = "Pokemon Belalang Sembah. Kedua sabitnya bisa memotong pohon besar hanya dengan sekali ayun."
+type1 = 12
+type2 = 10
+base_hp = 70
+base_attack = 110
+base_defense = 80
+base_sp_attack = 55
+base_sp_defense = 80
+base_speed = 105
+catch_rate = 45
+base_exp_yield = 100
+growth_rate = 1
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 137
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 137
+sprite_back_fps = 16.0
+sprite_front_female_sheet = ExtResource("6")
+sprite_front_female_columns = 69
+sprite_front_female_fps = 16.0
+sprite_back_female_sheet = ExtResource("7")
+sprite_back_female_columns = 69
+sprite_back_female_fps = 16.0

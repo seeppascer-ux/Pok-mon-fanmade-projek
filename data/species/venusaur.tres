@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/vine_whip.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/harden.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/VENUSAUR.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/VENUSAUR.png" id="5"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/VENUSAUR_female.png" id="6"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/VENUSAUR_female.png" id="7"]
+[ext_resource type="Resource" path="res://data/abilities/overgrow.tres" id="8"]
+[ext_resource type="Resource" path="res://data/abilities/chlorophyll.tres" id="9"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="10"]
+[ext_resource type="Resource" path="res://data/moves/absorb.tres" id="11"]
+[ext_resource type="Resource" path="res://data/moves/sand_attack.tres" id="12"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("10")
+level = 36
+move = ExtResource("11")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("10")
+level = 46
+move = ExtResource("12")
+
+[resource]
+script = ExtResource("1")
+species_id = 3
+species_name = "Venusaur"
+pokedex_description = "Pokemon Benih. Bunga besar di punggungnya menyerap sinar matahari untuk sumber tenaganya."
+type1 = 4
+type2 = 8
+base_hp = 80
+base_attack = 82
+base_defense = 83
+base_sp_attack = 100
+base_sp_defense = 100
+base_speed = 80
+catch_rate = 45
+base_exp_yield = 236
+growth_rate = 2
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 167
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 167
+sprite_back_fps = 16.0
+sprite_front_female_sheet = ExtResource("6")
+sprite_front_female_columns = 170
+sprite_front_female_fps = 16.0
+sprite_back_female_sheet = ExtResource("7")
+sprite_back_female_columns = 170
+sprite_back_female_fps = 16.0
+level_up_moves = [SubResource("LM1"), SubResource("LM2")]
+abilities = [ExtResource("8")]
+hidden_ability = ExtResource("9")
+evolution_level = 0

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/tackle.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/tail_whip.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/HITMONCHAN.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/HITMONCHAN.png" id="5"]
+
+[resource]
+script = ExtResource("1")
+species_id = 107
+species_name = "Hitmonchan"
+pokedex_description = "Pokemon Pukulan. Kepalan tangannya yang keras bisa melancarkan pukulan super cepat."
+type1 = 7
+base_hp = 50
+base_attack = 105
+base_defense = 79
+base_sp_attack = 35
+base_sp_defense = 110
+base_speed = 76
+catch_rate = 45
+base_exp_yield = 159
+growth_rate = 1
+gender_ratio = 1
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 81
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 81
+sprite_back_fps = 16.0

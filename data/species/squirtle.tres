@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="PokemonSpecies" format=3]
+
+[ext_resource type="Script" path="res://data/species/pokemon_species.gd" id="1"]
+[ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
+[ext_resource type="Resource" path="res://data/moves/tail_whip.tres" id="3"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/front/SQUIRTLE.png" id="4"]
+[ext_resource type="Texture2D" path="res://asset/pokemon/back/SQUIRTLE.png" id="5"]
+[ext_resource type="Resource" path="res://data/abilities/torrent.tres" id="6"]
+[ext_resource type="Resource" path="res://data/abilities/rain_dish.tres" id="7"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="8"]
+[ext_resource type="Resource" path="res://data/moves/tackle.tres" id="9"]
+[ext_resource type="Resource" path="res://data/moves/bite.tres" id="10"]
+[ext_resource type="Resource" path="res://data/species/wartortle.tres" id="11"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("8")
+level = 1
+move = ExtResource("9")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("8")
+level = 4
+move = ExtResource("3")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("8")
+level = 8
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("8")
+level = 12
+move = ExtResource("10")
+
+[resource]
+script = ExtResource("1")
+species_id = 7
+species_name = "Squirtle"
+pokedex_description = "Pokemon Kura-kura Kecil. Bersembunyi di dalam cangkang kerasnya kalau merasa terancam."
+type1 = 3
+base_hp = 44
+base_attack = 48
+base_defense = 65
+base_sp_attack = 50
+base_sp_defense = 64
+base_speed = 43
+catch_rate = 45
+base_exp_yield = 63
+growth_rate = 2
+gender_ratio = 3
+starting_moves = [ExtResource("2"), ExtResource("3")]
+sprite_front_sheet = ExtResource("4")
+sprite_front_columns = 51
+sprite_front_fps = 16.0
+sprite_back_sheet = ExtResource("5")
+sprite_back_columns = 51
+sprite_back_fps = 16.0
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4")]
+abilities = [ExtResource("6")]
+hidden_ability = ExtResource("7")
+evolves_into = ExtResource("11")
+evolution_level = 16

@@ -1,0 +1,233 @@
+FITUR BARU 2: EXP, ITEM/TAS, POKE BALL, CRITICAL HIT, STATUS CONDITION
+========================================================================
+
+Paket ini adalah TAMBAHAN (patch) buat project "Pokemon U" kamu, nyambung
+di atas patch pertama (learnset/evolution/ability/nature) -- pasang patch
+pertama itu DULU kalau belum. Cara pasang paket ini:
+
+1. Extract isi zip ini.
+2. Copy semua folder/file di dalamnya LANGSUNG ke folder project Godot
+   kamu (yang ada file project.godot-nya), timpa file yang sudah ada
+   kalau ditanya (lihat daftar "DITIMPA" di bawah -- isinya sudah
+   termasuk kode lama + fitur baru, bukan project lengkap baru).
+3. Buka Godot, biarkan reimport, lalu Project > Reload Current Project
+   kalau ada error "Cannot find class" di console (ada beberapa class
+   baru: StatusCondition, ItemData, BagSlot, Bag, PCBox). Kalau masih ada
+   error setelah reload, coba tutup Godot sepenuhnya lalu buka ulang
+   project-nya (bukan cuma Reload) -- kadang cache-nya perlu di-refresh
+   total, bukan cuma reload.
+4. (Opsional tapi disarankan) Di scene world.tscn, klik node "world",
+   drag res://data/starter_bag.tres ke field "Bag" di Inspector -- ini
+   ngasih player 5 Poke Ball + 3 Potion + 1 Antidote dari awal. Kalau
+   field ini dikosongkan, game tetap jalan normal, cuma Tas-nya kosong
+   ("Belum ada item di Tas" -- eh sekarang lebih tepatnya bakal nampilin
+   panel Tas kosong, bukan pesan itu lagi).
+
+ISI PAKET
+=========
+data/species/pokemon_species.gd  -> DITIMPA, fungsi total_exp_for_level()
+									 sekarang isinya rumus kurva EXP
+									 langsung (Fast/Medium Fast/Medium
+									 Slow/Slow) -- TIDAK manggil class
+									 terpisah lagi, biar tidak ada risiko
+									 error "Nonexistent function" gara-
+									 gara urutan load antar script
+									 class_name custom di Godot
+data/status_condition.gd         -> class baru StatusCondition (enum
+									 Poison/Burn/Paralysis/Sleep/Freeze +
+									 nama teksnya)
+data/bag.gd                      -> class baru Bag (Tas: add/remove/has/
+									 get_quantity item)
+data/items/bag_slot.gd           -> class baru BagSlot (1 baris di Tas:
+									 item + jumlah)
+data/items/item_data.gd          -> class baru ItemData (data 1 jenis
+									 item: Poke Ball/Potion/dst)
+data/items/poke_ball.tres,
+	 great_ball.tres,
+	 potion.tres, super_potion.tres,
+	 antidote.tres, full_heal.tres,
+	 revive.tres                 -> 7 contoh item jadi
+data/starter_bag.tres            -> contoh Bag jadi (5 Poke Ball, 3
+									 Potion, 1 Antidote) siap drag ke
+									 field "Bag" node world
+data/pc_box.gd                   -> class baru PCBox (penyimpanan
+									 Pokemon di luar party, baru data
+									 doang, belum ada UI)
+data/pokemon_instance.gd         -> DITIMPA, tambah gain_exp(),
+									 exp_to_next_level(), status
+									 condition (apply_status/cure_status/
+									 is_healthy/get_status_name)
+data/moves/move_data.gd          -> DITIMPA, tambah Effect.STATUS_CONDITION
+									 + field effect_status
+data/moves/ember.tres            -> DITIMPA, sekarang beneran bisa bikin
+									 Burn (10% chance)
+data/moves/thundershock.tres     -> DITIMPA, sekarang beneran bisa bikin
+									 Paralysis (10% chance)
+data/moves/poison_sting.tres     -> DITIMPA, sekarang beneran bisa bikin
+									 Poison (30% chance)
+script/battle/battle_manager.gd  -> DITIMPA, tambah EXP setelah menang,
+									 critical hit, status condition
+									 (damage tiap giliran + gagal
+									 bergerak), Poke Ball/capture, pakai
+									 item pas battle
+script/battle/battle_mon.gd      -> DITIMPA, get_attack()/get_speed()
+									 sekarang kena pengaruh status (Burn
+									 separuhin Attack, Paralysis motongin
+									 Speed jadi 1/4)
+script/battle/battle_ui.gd       -> DITIMPA, tombol Tas sekarang beneran
+									 nampilin daftar item & bisa dipakai,
+									 TODO EXP dihapus (sudah otomatis)
+script/map/world.gd              -> DITIMPA, field baru "bag" & "pc_box",
+									 nangkep Pokemon otomatis masuk party
+									 (atau PC kalau party penuh 6 ekor)
+
+
+1) EXP & LEVEL UP OTOMATIS SETELAH MENANG
+===========================================
+PokemonSpecies.total_exp_for_level() (rumus kurva EXP 4 growth rate) sudah
+DITIMPA di paket ini jadi rumusnya langsung nempel di fungsi itu sendiri,
+tidak manggil class terpisah lagi -- kalau kamu masih punya file
+data/exp_curve.gd dari percobaan sebelumnya, aman dihapus (tidak dipakai
+lagi, tidak akan bikin error walau dibiarkan juga).
+
+Sebelumnya level_up() cuma bisa dipanggil manual. Sekarang ada
+gain_exp(amount) yang otomatis ngitung naik level berapa kali (bisa lebih
+dari 1 kali kalau EXP-nya banyak) SEKALIGUS otomatis cek+jalanin evolusi
+tiap kali naik level:
+
+	var pesan := my_pokemon.gain_exp(120)
+	for p in pesan:
+		print(p)   # "X dapat 120 EXP!", "X naik ke Level 12!", dst
+
+battle_manager.gd otomatis manggil ini begitu player MENANG battle liar
+(bukan kalah/kabur), pakai rumus EXP disederhanakan:
+	exp = (base_exp_yield musuh * level musuh) / 7
+(base_exp_yield sudah ada dari patch species sebelumnya, tidak perlu isi
+apa-apa lagi). Pesannya otomatis muncul di message box battle sebelum
+"Kamu menang!" selesai.
+
+Cek exp_to_next_level() kapan aja buat nampilin EXP bar di UI party:
+	var sisa := my_pokemon.exp_to_next_level()   # 0 kalau sudah Lv.100
+
+
+2) ITEM / TAS (BAG)
+=====================
+Class baru ItemData (1 jenis item) + Bag (tas beneran, isi banyak
+ItemData + jumlahnya) + BagSlot (baris di dalam Bag).
+
+Kategori item (ItemData.category):
+	POKE_BALL      -> nangkep Pokemon liar, lihat bagian 3
+	HEAL_HP        -> pulihin HP (Potion, Super Potion, dst)
+	CURE_STATUS    -> sembuhin status (Antidote, Full Heal)
+	HEAL_AND_CURE  -> pulihin HP SEKALIGUS sembuhin status (misal
+					  Full Restore -- belum ada contoh jadinya, tinggal
+					  bikin sendiri lewat New Resource > ItemData)
+	REVIVE         -> hidupin lagi Pokemon yang pingsan
+	OTHER          -> item lain yang belum ada efek otomatis (TM, Batu
+					  evolusi, dll)
+
+Cara pakai lewat kode (biasanya tidak perlu, sudah otomatis lewat tombol
+Tas di battle_ui.gd):
+	bag.add_item(potion_item, 3)      # dikasih 3 Potion
+	bag.remove_item(potion_item, 1)   # dipakai 1
+	bag.has_item(poke_ball_item)      # true/false
+	bag.get_quantity(potion_item)     # berapa sisa
+
+Tombol "TAS" di battle sekarang beneran nampilin daftar item yang kamu
+punya (nama + jumlah), tinggal tap buat dipakai. Item HP/status otomatis
+gagal terpakai (tidak mengurangi jumlah di Tas) kalau memang tidak ada
+efeknya, misal Potion ke Pokemon yang HP-nya udah penuh.
+
+PENTING: field "bag" ada di 2 tempat -- world.gd (Tas beneran milik
+player, dibawa terus antar battle) dan battle_ui.gd (cuma referensi yang
+dikirim world.gd pas battle mulai). Kalau bikin battle_ui manual tanpa
+lewat world.gd (misal scene battle_quick_test.tscn buat testing), kamu
+perlu isi field "Bag" battle_ui manual di Inspector atau lewat
+start(player, enemy, my_bag) kalau mau tombol Tas ada isinya.
+
+
+3) POKE BALL / CAPTURE
+========================
+Lempar Poke Ball dari menu Tas pas battle liar (cuma masuk akal di battle
+liar, sistem ini belum ada battle trainer). Peluang tangkap disederhanakan
+dari rumus shake resmi game Pokemon:
+
+	chance = hp_factor * (catch_rate/255) * catch_multiplier * status_bonus
+
+- hp_factor: makin sedikit HP musuh, makin gampang (rumus sama kayak game
+  asli: (3*maxHP - 2*currentHP) / (3*maxHP))
+- catch_rate: dari PokemonSpecies.catch_rate (sudah ada dari patch
+  species sebelumnya, 0-255, makin kecil makin susah)
+- catch_multiplier: dari ItemData bola yang dipakai (Poke Ball 1.0,
+  Great Ball 1.5 -- tinggal bikin Ultra Ball dkk sendiri lewat New
+  Resource > ItemData, category POKE_BALL)
+- status_bonus: 2.5x kalau musuh Sleep/Freeze, 1.5x kalau status lain,
+  1.0x kalau sehat -- jadi Poison Sting -> lempar Poke Ball itu strategi
+  yang beneran ngaruh sekarang
+
+Berhasil ditangkap -> battle_ui.gd mancarin sinyal "pokemon_captured" ->
+world.gd otomatis masukin ke player_party (atau ke pc_box kalau party
+udah 6 ekor, lihat bagian 5).
+
+
+4) CRITICAL HIT
+================
+Otomatis jalan di semua damage move, tidak perlu setting apa-apa.
+Disederhanakan jadi peluang tetap 1/16 (~6%) kali damage x2 (tidak
+memperhitungkan stage rasio/move ber-crit-tinggi kayak Slash/Karate Chop
+di game asli -- kalau mau nambahin itu, tinggal kasih field baru di
+MoveData misal "high_crit_ratio" dan naikin peluangnya di
+_calculate_damage() pas true).
+
+
+5) STATUS CONDITION
+=====================
+5 status: Poison, Burn, Paralysis, Sleep, Freeze -- nempel di
+PokemonInstance (bukan cuma pas battle, kebawa terus sampai disembuhkan).
+
+Cara ngasih status lewat move: isi di MoveData grup "Efek Tambahan":
+	effect = STATUS_CONDITION
+	effect_chance = 10          # persen peluang kena
+	effect_status = BURN        # atau POISON/PARALYSIS/SLEEP/FREEZE
+(Ember, Thundershock, Poison Sting di paket ini sudah dicontohkan.)
+
+Efeknya otomatis di battle_manager.gd:
+	Poison/Burn    -> damage 1/8 max HP tiap AKHIR giliran (kedua Pokemon
+					  udah gerak), tidak menghalangi bergerak
+	Paralysis      -> Speed jadi 1/4, DAN 25% peluang gagal total tiap
+					  giliran ("X lumpuh! Tidak bisa bergerak!")
+	Sleep          -> tertidur 1-3 giliran acak, sama sekali tidak bisa
+					  gerak sampai giliran tidurnya habis
+	Freeze         -> sama sekali tidak bisa gerak, 20% peluang cair
+					  tiap giliran
+	Burn           -> selain damage tiap giliran, juga separuhin Attack
+					  fisik (BUKAN Special Attack)
+
+Tipe kebal status tertentu (persis game asli): Fire kebal Burn, Poison
+kebal Poison, Electric kebal Paralysis, Ice kebal Freeze -- otomatis
+dicek, muncul pesan "Tidak berpengaruh...".
+
+Sembuhin status lewat item (Antidote/Full Heal, lihat bagian 2) atau
+lewat kode manual:
+	my_pokemon.cure_status()
+
+
+6) PARTY MAX 6 EKOR + PC BOX
+==============================
+world.gd sekarang punya PARTY_MAX_SIZE = 6. Pokemon yang ditangkap pas
+party udah penuh otomatis masuk ke pc_box (bukan hilang/gagal ditangkap).
+pc_box baru sistem data doang (data/pc_box.gd: deposit()/withdraw()/
+is_empty()) -- belum ada UI buat lihat/keluarin isinya secara visual,
+tinggal dibikinkan menu sendiri kalau perlu (mirip cara bag_menu dibikin
+lewat kode murni di battle_ui.gd, lihat _build_bag_menu() buat contoh
+polanya).
+
+
+CATATAN
+========
+- Tombol "POKEMON" di menu battle masih placeholder ("Tidak ada Pokemon
+  lain di party") -- ganti Pokemon aktif di tengah battle belum ada di
+  paket ini.
+- Item HEAL_HP/CURE_STATUS/REVIVE di menu Tas SELALU ditujukan ke Pokemon
+  aktif doang (player_pokemon), karena alasan yang sama seperti di atas.
+- PC Box baru data, belum ada layar buat lihat isinya.
