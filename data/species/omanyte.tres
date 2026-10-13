@@ -5,6 +5,7 @@
 [ext_resource type="Resource" path="res://data/moves/harden.tres" id="3"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/front/OMANYTE.png" id="4"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/OMANYTE.png" id="5"]
+[ext_resource type="Resource" path="res://data/species/omastar.tres" id="6"]
 
 [resource]
 script = ExtResource("1")
@@ -30,3 +31,6 @@ sprite_front_fps = 16.0
 sprite_back_sheet = ExtResource("5")
 sprite_back_columns = 68
 sprite_back_fps = 16.0
+
+evolves_into = ExtResource("6")
+evolution_level = 40

@@ -4,6 +4,7 @@
 [ext_resource type="Resource" path="res://data/moves/water_gun.tres" id="2"]
 [ext_resource type="Resource" path="res://data/moves/tail_whip.tres" id="3"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/TENTACOOL.png" id="4"]
+[ext_resource type="Resource" path="res://data/species/tentacruel.tres" id="5"]
 
 [resource]
 script = ExtResource("1")
@@ -26,3 +27,6 @@ starting_moves = [ExtResource("2"), ExtResource("3")]
 sprite_back_sheet = ExtResource("4")
 sprite_back_columns = 95
 sprite_back_fps = 16.0
+
+evolves_into = ExtResource("5")
+evolution_level = 30

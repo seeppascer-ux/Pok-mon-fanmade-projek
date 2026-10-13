@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/DODUO.png" id="5"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/front/DODUO_female.png" id="6"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/DODUO_female.png" id="7"]
+[ext_resource type="Resource" path="res://data/species/dodrio.tres" id="8"]
 
 [resource]
 script = ExtResource("1")
@@ -38,3 +39,6 @@ sprite_front_female_fps = 16.0
 sprite_back_female_sheet = ExtResource("7")
 sprite_back_female_columns = 95
 sprite_back_female_fps = 16.0
+
+evolves_into = ExtResource("8")
+evolution_level = 31

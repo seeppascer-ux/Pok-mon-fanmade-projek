@@ -4,6 +4,7 @@
 [ext_resource type="Resource" path="res://data/moves/confusion.tres" id="2"]
 [ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/front/DROWZEE.png" id="4"]
+[ext_resource type="Resource" path="res://data/species/hypno.tres" id="5"]
 
 [resource]
 script = ExtResource("1")
@@ -25,3 +26,6 @@ starting_moves = [ExtResource("2"), ExtResource("3")]
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 153
 sprite_front_fps = 16.0
+
+evolves_into = ExtResource("5")
+evolution_level = 26
