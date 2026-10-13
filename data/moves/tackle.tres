@@ -4,4 +4,10 @@
 
 [resource]
 script = ExtResource("1")
+move_name = "Tackle"
+type = 1
+category = 0
+power = 40
+accuracy = 100
+max_pp = 35
 description = "Menabrak lawan dengan seluruh tubuh."
