@@ -233,8 +233,9 @@ func gain_exp(amount: int) -> Array[String]:
 		messages.append_array(level_up())
 		var evolved_into: PokemonSpecies = check_evolution()
 		if evolved_into != null:
+			var old_name: String = get_display_name()
 			evolve()
-			messages.append("%s berevolusi jadi %s!" % [get_display_name(), evolved_into.species_name])
+			messages.append("%s berevolusi jadi %s!" % [old_name, evolved_into.species_name])
 
 	return messages
 
