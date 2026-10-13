@@ -208,6 +208,23 @@ theme_override_font_sizes/font_size = 14
 text = "0 / 0"
 horizontal_alignment = 2
 
+[node name="EXPRow" type="HBoxContainer" parent="PlayerPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EXPLabel" type="Label" parent="PlayerPanel/Margin/VBox/EXPRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25, 0.55, 0.8, 1)
+theme_override_font_sizes/font_size = 12
+text = "EXP"
+
+[node name="EXPBar" type="ProgressBar" parent="PlayerPanel/Margin/VBox/EXPRow"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+show_percentage = false
+
 [node name="BottomArea" type="Control" parent="." unique_id=748268393]
 layout_mode = 1
 anchor_left = 0.02
