@@ -22,6 +22,8 @@
 [ext_resource type="Resource" uid="uid://drrf4fn0wrh22" path="res://data/species/pikachu.tres" id="23_pika"]
 [ext_resource type="Resource" uid="uid://dxrs12ixla1yk" path="res://data/species/rattata.tres" id="24_ratt"]
 [ext_resource type="Resource" uid="uid://dx5l2geufjelc" path="res://data/species/pidgey.tres" id="25_pidg"]
+[ext_resource type="Script" path="res://script/npc/npc.gd" id="100_npcgd"]
+[ext_resource type="Script" path="res://script/map/village_ambient.gd" id="101_ambgd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g7b7a"]
 size = Vector2(45, 64)
@@ -4432,6 +4434,33 @@ position = Vector2(1267, 575)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="rumah/Area2D" unique_id=1150820434]
 position = Vector2(-12.75, -28)
 shape = SubResource("RectangleShape2D_gyc6d")
+
+[node name="Ambient" type="Node2D" parent="."]
+script = ExtResource("101_ambgd")
+
+[node name="NPC_Kakek" type="CharacterBody2D" parent="."]
+position = Vector2(528, 288)
+z_index = 2
+script = ExtResource("100_npcgd")
+npc_name = "Kakek"
+dialogue_lines = Array[String](["Selamat datang di desa kami, nak!", "Rumput tinggi di luar desa itu berbahaya. Bawa Pokemon yang kuat ya!"])
+tint = Color(0.75, 0.82, 1, 1)
+
+[node name="NPC_Ibu" type="CharacterBody2D" parent="."]
+position = Vector2(624, 352)
+z_index = 2
+script = ExtResource("100_npcgd")
+npc_name = "Ibu"
+dialogue_lines = Array[String](["Anakku baru saja menangkap Pidgey kemarin!", "Dia senang sekali... jaga Pokemonmu baik-baik ya."])
+tint = Color(1, 0.87, 0.92, 1)
+
+[node name="NPC_Bocah" type="CharacterBody2D" parent="."]
+position = Vector2(576, 400)
+z_index = 2
+script = ExtResource("100_npcgd")
+npc_name = "Bocah"
+dialogue_lines = Array[String](["Aku mau jadi Trainer terkuat suatu hari nanti!", "Kamu sudah punya berapa Pokemon?"])
+tint = Color(1, 1, 0.78, 1)
 
 [connection signal="button_down" from="CanvasLayer/upbutton" to="Player" method="_on_upbutton_button_down"]
 [connection signal="button_up" from="CanvasLayer/upbutton" to="Player" method="_on_upbutton_button_up"]
