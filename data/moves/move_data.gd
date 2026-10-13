@@ -14,6 +14,7 @@ enum Stat { ATTACK, DEFENSE, SP_ATTACK, SP_DEFENSE, SPEED, ACCURACY, EVASION }
 @export var power: int = 40
 @export var accuracy: int = 100 ## 0-100. Pakai -1 kalau mau selalu kena.
 @export var max_pp: int = 35
+@export var priority: int = 0 ## Makin besar makin duluan. Dicek SEBELUM speed. Contoh: Quick Attack = 1.
 @export_multiline var description: String = ""
 
 @export_group("Efek Tambahan (opsional)")
