@@ -122,9 +122,16 @@ func _resolve_turn(player_move_index: int) -> void:
 		order.append({"is_player": false, "index": enemy_move_index})
 
 	if order.size() == 2:
-		var p_speed: float = player_mon.get_speed()
-		var e_speed: float = enemy_mon.get_speed()
-		var player_first: bool = p_speed > e_speed or (p_speed == e_speed and randi() % 2 == 0)
+		var p_move: MoveData = player_mon.instance.moves[player_move_index]
+		var e_move: MoveData = enemy_mon.instance.moves[enemy_move_index]
+		var player_first: bool
+		if p_move.priority != e_move.priority:
+			## Priority dicek dulu, sebelum speed (misal Quick Attack selalu duluan).
+			player_first = p_move.priority > e_move.priority
+		else:
+			var p_speed: float = player_mon.get_speed()
+			var e_speed: float = enemy_mon.get_speed()
+			player_first = p_speed > e_speed or (p_speed == e_speed and randi() % 2 == 0)
 		if not player_first:
 			order.reverse()
 
