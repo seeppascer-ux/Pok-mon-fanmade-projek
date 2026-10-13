@@ -12,6 +12,7 @@ signal battle_ended(player_won: bool)
 signal fled() ## player berhasil kabur (RUN) -- battle selesai tanpa menang/kalah
 signal move_used(is_player: bool) ## dipancarkan pas attacker mulai pakai move, buat trigger animasi
 signal captured(instance: PokemonInstance) ## dipancarkan begitu Poke Ball berhasil nangkap Pokemon liar
+signal exp_gained(amount: int, old_exp: int, old_level: int, new_level: int) ## EXP sudah di-apply; UI pakai ini buat animasi bar + efek naik level
 
 const TURN_DELAY: float = 0.6
 const MESSAGE_DELAY: float = 0.55
@@ -386,7 +387,10 @@ func _grant_exp() -> void:
 	if exp_gain <= 0:
 		return
 
+	var old_level: int = player_mon.instance.level
+	var old_exp: int = player_mon.instance.exp
 	var messages: Array[String] = player_mon.instance.gain_exp(exp_gain)
+	exp_gained.emit(exp_gain, old_exp, old_level, player_mon.instance.level)
 	for m in messages:
 		message.emit(m)
 		await get_tree().create_timer(MESSAGE_DELAY).timeout

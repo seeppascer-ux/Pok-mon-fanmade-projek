@@ -30,6 +30,8 @@ const HP_YELLOW: Color = Color8(248, 176, 0)
 const HP_RED: Color = Color8(248, 88, 40)
 const HP_TWEEN_TIME: float = 0.45
 const TEMP_MESSAGE_TIME: float = 1.1
+const EXP_FILL: Color = Color8(64, 176, 248)
+const EXP_TWEEN_TIME: float = 0.7
 
 @onready var background: TextureRect = $Background
 @onready var enemy_sprite: TextureRect = $EnemySprite
@@ -44,6 +46,8 @@ const TEMP_MESSAGE_TIME: float = 1.1
 @onready var player_level_label: Label = $PlayerPanel/Margin/VBox/HeaderRow/LevelLabel
 @onready var player_hp_bar: ProgressBar = $PlayerPanel/Margin/VBox/HPRow/HPBar
 @onready var player_hp_number: Label = $PlayerPanel/Margin/VBox/HPNumberLabel
+@onready var player_panel: PanelContainer = $PlayerPanel
+@onready var player_exp_bar: ProgressBar = $PlayerPanel/Margin/VBox/EXPRow/EXPBar
 
 @onready var message_box: PanelContainer = $BottomArea/MessageBox
 @onready var message_label: Label = $BottomArea/MessageBox/MessageMargin/MessageLabel
@@ -85,6 +89,7 @@ func _ready() -> void:
 	battle_manager.fled.connect(_on_fled)
 	battle_manager.move_used.connect(_on_move_used)
 	battle_manager.captured.connect(_on_captured)
+	battle_manager.exp_gained.connect(_on_exp_gained)
 
 	fight_button.pressed.connect(_on_fight_pressed)
 	bag_button.pressed.connect(_on_bag_pressed)
@@ -94,6 +99,7 @@ func _ready() -> void:
 
 	_build_bag_menu()
 	_setup_hp_bar_styles()
+	_setup_exp_bar_styles()
 	_style_main_menu_buttons()
 	_set_bottom_state(BottomState.MESSAGE)
 	message_label.text = "..."
@@ -123,6 +129,7 @@ func start(p_player: PokemonInstance, p_enemy: PokemonInstance, p_bag: Bag = nul
 
 	_set_hp_immediate(true, p_player.current_hp, p_player.max_hp())
 	_set_hp_immediate(false, p_enemy.current_hp, p_enemy.max_hp())
+	_set_exp_immediate()
 
 	_setup_sprite(enemy_sprite, p_enemy.species.get_front_display_texture(p_enemy.is_female()) if p_enemy.species != null else null)
 	_setup_sprite(player_sprite, p_player.species.get_back_display_texture(p_player.is_female()) if p_player.species != null else null)
@@ -358,6 +365,91 @@ func _set_hp_immediate(is_player: bool, current: int, max_hp: int) -> void:
 	label.text = "%d / %d" % [current, max_hp]
 	if style != null:
 		style.bg_color = _hp_color_for_ratio(float(current) / maxf(float(max_hp), 1.0))
+
+
+## ---------------------------------------------------------------------
+## EXP BAR + LEVEL UP
+## ---------------------------------------------------------------------
+
+func _setup_exp_bar_styles() -> void:
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.12, 0.12, 0.14)
+	bg.corner_radius_top_left = 4
+	bg.corner_radius_top_right = 4
+	bg.corner_radius_bottom_left = 4
+	bg.corner_radius_bottom_right = 4
+
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = EXP_FILL
+	fill.corner_radius_top_left = 4
+	fill.corner_radius_top_right = 4
+	fill.corner_radius_bottom_left = 4
+	fill.corner_radius_bottom_right = 4
+
+	player_exp_bar.add_theme_stylebox_override("background", bg)
+	player_exp_bar.add_theme_stylebox_override("fill", fill)
+
+
+## Rasio 0..1 progres EXP di level tertentu (1.0 kalau sudah level 100).
+func _exp_ratio_for(instance: PokemonInstance, exp_value: int, level_value: int) -> float:
+	if instance == null or instance.species == null or level_value >= 100:
+		return 1.0
+	var base: int = instance.species.total_exp_for_level(level_value)
+	var next: int = instance.species.total_exp_for_level(level_value + 1)
+	if next <= base:
+		return 1.0
+	return clampf(float(exp_value - base) / float(next - base), 0.0, 1.0)
+
+
+func _set_exp_immediate() -> void:
+	if player_pokemon == null or player_exp_bar == null:
+		return
+	player_exp_bar.value = _exp_ratio_for(player_pokemon, player_pokemon.exp, player_pokemon.level) * player_exp_bar.max_value
+
+
+## Dipanggil saat BattleManager selesai menghitung EXP (sinyal exp_gained).
+## EXP-nya sendiri sudah di-apply ke instance; tugas fungsi ini cuma
+## menganimasikan bar dari posisi LAMA ke posisi BARU, level per level.
+func _on_exp_gained(_amount: int, old_exp: int, old_level: int, new_level: int) -> void:
+	if player_pokemon == null or player_pokemon.species == null:
+		return
+	_animate_exp_gain(old_exp, old_level, new_level)
+
+
+func _animate_exp_gain(old_exp: int, old_level: int, new_level: int) -> void:
+	var bar_max: float = player_exp_bar.max_value
+	var cur_level: int = old_level
+	# Mulai dari posisi lama (instance.exp sudah berisi nilai baru).
+	player_exp_bar.value = _exp_ratio_for(player_pokemon, old_exp, old_level) * bar_max
+
+	while cur_level < new_level:
+		var threshold: int = player_pokemon.species.total_exp_for_level(cur_level + 1)
+		var fill_tween: Tween = create_tween()
+		fill_tween.tween_property(player_exp_bar, "value", bar_max, EXP_TWEEN_TIME)
+		await fill_tween.finished
+		cur_level += 1
+		_play_level_up_fx()
+		player_level_label.text = "Lv.%d" % cur_level
+		player_exp_bar.value = 0.0
+		await get_tree().create_timer(0.35).timeout
+
+	var final_ratio: float = _exp_ratio_for(player_pokemon, player_pokemon.exp, new_level)
+	var rest_tween: Tween = create_tween()
+	rest_tween.tween_property(player_exp_bar, "value", final_ratio * bar_max, EXP_TWEEN_TIME)
+	await rest_tween.finished
+
+
+## Efek tiap naik level: panel pemain berkedip cerah + label level membesar sesaat.
+func _play_level_up_fx() -> void:
+	var flash: Tween = create_tween()
+	flash.set_parallel(true)
+	flash.tween_property(player_panel, "modulate", Color(1.35, 1.35, 1.1), 0.15)
+	flash.chain().tween_property(player_panel, "modulate", Color.WHITE, 0.3)
+
+	player_level_label.pivot_offset = player_level_label.size / 2.0
+	var pop: Tween = create_tween()
+	pop.tween_property(player_level_label, "scale", Vector2(1.4, 1.4), 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	pop.tween_property(player_level_label, "scale", Vector2.ONE, 0.2)
 
 
 func _on_move_button_pressed(index: int) -> void:
