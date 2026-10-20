@@ -68,8 +68,15 @@ enum GenderRatio {
 ## berevolusi lagi (misal sudah bentuk terakhir).
 @export var evolves_into: PokemonSpecies
 ## Level minimum buat evolusi lewat naik level. 0 = tidak berevolusi lewat
-## level (misal evolusi pakai batu/trade -- belum didukung sistem ini).
+## level (lihat "evolution_stone" / "evolves_by_trade" di bawah buat cara lain).
 @export var evolution_level: int = 0
+## Batu evolusi yang dibutuhkan: id batu ("fire", "water", "thunder",
+## "leaf", "moon") -- harus sama persis dengan ItemData.evolution_stone_id
+## batu yang dipakai. "" = bukan evolusi batu.
+@export var evolution_stone: String = ""
+## true kalau spesies ini berevolusi lewat trade (tukar Pokemon), misal
+## Kadabra -> Alakazam. Diproses lewat PokemonInstance.evolve_by_trade().
+@export var evolves_by_trade: bool = false
 
 @export_group("Visual")
 ## Sprite diam (fallback). Kalau field "Sprite Front/Back Sheet" di bawah
@@ -171,6 +178,18 @@ func get_moves_known_at(target_level: int) -> Array[MoveData]:
 ## True kalau spesies ini seharusnya berevolusi di level "target_level".
 func can_evolve_at(target_level: int) -> bool:
 	return evolves_into != null and evolution_level > 0 and target_level >= evolution_level
+
+
+## True kalau spesies ini berevolusi memakai batu dengan id "stone_id"
+## (misal "fire" buat Fire Stone). Lihat PokemonInstance.evolve_with_stone().
+func can_evolve_with_stone(stone_id: String) -> bool:
+	return evolves_into != null and evolution_stone != "" and evolution_stone == stone_id
+
+
+## True kalau spesies ini berevolusi lewat trade.
+## Lihat PokemonInstance.evolve_by_trade().
+func can_evolve_by_trade() -> bool:
+	return evolves_into != null and evolves_by_trade
 
 
 ## Total EXP kumulatif (dari Level 1) yang dibutuhkan buat sampai

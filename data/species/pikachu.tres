@@ -55,6 +55,7 @@ level_up_moves = Array[ExtResource("10")]([SubResource("LM1"), SubResource("LM2"
 abilities = Array[ExtResource("1_maw5u")]([ExtResource("8")])
 hidden_ability = ExtResource("9")
 evolves_into = ExtResource("13")
+evolution_stone = "thunder"
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 112
 sprite_front_female_sheet = ExtResource("6")

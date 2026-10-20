@@ -34,3 +34,4 @@ sprite_back_fps = 16.0
 
 evolves_into = ExtResource("6")
 evolution_level = 0
+evolves_by_trade = true
