@@ -12,7 +12,8 @@ enum Category {
 	CURE_STATUS,   ## sembuhin status condition, lihat "cures_status"/"cures_all_status"
 	HEAL_AND_CURE, ## pulihin HP SEKALIGUS sembuhin status (misal Full Restore)
 	REVIVE,        ## hidupin lagi Pokemon yang pingsan, lihat "heal_amount"
-	OTHER,         ## item lain yang belum ada efek otomatisnya (TM, Batu evolusi, dll)
+	OTHER,         ## item lain yang belum ada efek otomatisnya (TM, dll)
+	EVO_STONE,     ## batu evolusi (Fire/Water/Thunder/Leaf/Moon Stone), lihat "evolution_stone_id"
 }
 
 @export var item_name: String = "Item"
@@ -38,6 +39,12 @@ enum Category {
 @export var cures_status: int = StatusCondition.Status.NONE
 ## true kalau item ini menyembuhkan status APA PUN (misal Full Heal).
 @export var cures_all_status: bool = false
+
+@export_group("Batu Evolusi (dipakai kalau category = EVO_STONE)")
+## Id batu ini: "fire", "water", "thunder", "leaf", atau "moon". Harus sama
+## persis dengan PokemonSpecies.evolution_stone milik spesies yang mau
+## dievolusikan. Dipakai lewat Bag.use_stone_on() (bukan pas battle).
+@export var evolution_stone_id: String = ""
 
 @export_group("Battle")
 ## true kalau item ini boleh dipakai lewat menu Tas pas battle. Item kayak
