@@ -20,6 +20,7 @@
   - Sistem battle + mekanik priority (mis. Quick Attack)
   - EXP bar + animasi naik level di UI battle
   - Garis evolusi tersambung untuk 69/151 spesies (46 evolusi level otomatis)
+  - Sistem evolusi batu & trade (sejak 20 Okt 2026): 5 item batu (Api/Air/Petir/Daun/Bulan), 12 spesies batu + 4 trade tertandai, API `evolve_with_stone()`/`evolve_by_trade()` + `Bag.use_stone_on()` — teruji headless 32/32
   - Desa hidup: 3 NPC berkeliaran & bisa diajak bicara, daun jatuh, kupu-kupu, 3 rumah
 
 ## 3. Aset
@@ -40,7 +41,7 @@
 
 ## 6. Backlog (menunggu keputusan owner / belum dikerjakan)
 1. **6 move yatim** (`powder_snow`, `karate_chop`, `lick`, `dragon_rage`, `metal_claw`, `fairy_wind`): file-nya masih draf lokal, belum terhubung ke spesies mana pun. Peta learnset untuk 26 spesies sudah diusulkan ke owner 15 Okt 2026 — menunggu persetujuan.
-2. **Sistem evolusi batu & trade**: 12 evolusi batu + 4 trade saat ini terdokumentasi `evolution_level = 0` (belum bisa terpicu) — sistemnya belum dibuat.
+2. ~~**Sistem evolusi batu & trade**~~ — SELESAI (sistem) 20 Okt 2026: data + logika + tas berfungsi & teruji. Sisa tahap berikutnya: kabel UI (menu party "pakai batu") + pemicu trade di dalam game (mis. NPC penukar) — belum dikerjakan.
 3. **Eevee**: evolusi bercabang 3 belum didukung field `evolves_into` yang hanya satu target.
 
 ## 7. Definisi Selesai (tahap saat ini)
