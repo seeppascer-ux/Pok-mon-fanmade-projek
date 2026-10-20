@@ -53,3 +53,25 @@ func get_quantity(item: ItemData) -> int:
 		if slot.item == item:
 			return slot.quantity
 	return 0
+
+
+## Pakai 1 batu evolusi (ItemData kategori EVO_STONE) dari Tas ke "target".
+## Batu cuma berkurang kalau evolusinya beneran terjadi (sama seperti pola
+## BattleManager.player_use_item: item tidak hangus kalau efeknya gagal).
+## Return pesan-pesan buat ditampilkan ke UI, misal
+## ["Pikachu berevolusi jadi Raichu!"] -- array kosong kalau gagal (batu
+## tidak ada di Tas, bukan batu evolusi, atau tidak cocok buat target).
+func use_stone_on(stone: ItemData, target: PokemonInstance) -> Array[String]:
+	var messages: Array[String] = []
+	if stone == null or target == null:
+		return messages
+	if stone.category != ItemData.Category.EVO_STONE:
+		return messages
+	if not has_item(stone):
+		return messages
+	if not target.can_evolve_with_stone(stone.evolution_stone_id):
+		return messages
+	messages = target.evolve_with_stone(stone.evolution_stone_id)
+	if not messages.is_empty():
+		remove_item(stone, 1)
+	return messages

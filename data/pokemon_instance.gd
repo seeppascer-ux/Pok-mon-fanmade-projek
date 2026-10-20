@@ -258,6 +258,55 @@ func evolve() -> void:
 	var new_species := check_evolution()
 	if new_species == null:
 		return
+	_apply_evolution(new_species)
+
+
+## Inti proses evolusi: ganti species ke "new_species" sambil menyesuaikan
+## HP saat ini secara proporsional. Dipakai semua jalur evolusi (level,
+## batu, trade) supaya perilakunya konsisten.
+func _apply_evolution(new_species: PokemonSpecies) -> void:
 	var hp_ratio: float = float(current_hp) / float(max(max_hp(), 1))
 	species = new_species
 	current_hp = int(round(max_hp() * hp_ratio))
+
+
+## True kalau Pokemon ini bisa berevolusi memakai batu dengan id "stone_id"
+## (misal "thunder" buat Pikachu + Thunder Stone).
+func can_evolve_with_stone(stone_id: String) -> bool:
+	return species != null and species.can_evolve_with_stone(stone_id)
+
+
+## Evolusi memakai batu evolusi (biasanya dipanggil lewat
+## Bag.use_stone_on() supaya jumlah batunya di Tas ikut berkurang).
+## Return pesan buat UI, misal ["Pikachu berevolusi jadi Raichu!"] --
+## array kosong kalau batu ini tidak cocok buat Pokemon ini.
+func evolve_with_stone(stone_id: String) -> Array[String]:
+	var messages: Array[String] = []
+	if not can_evolve_with_stone(stone_id):
+		return messages
+	var old_name: String = get_display_name()
+	var new_species: PokemonSpecies = species.evolves_into
+	_apply_evolution(new_species)
+	messages.append("%s berevolusi jadi %s!" % [old_name, new_species.species_name])
+	return messages
+
+
+## True kalau Pokemon ini berevolusi lewat trade (misal Kadabra, Machoke,
+## Graveler, Haunter).
+func can_evolve_by_trade() -> bool:
+	return species != null and species.can_evolve_by_trade()
+
+
+## Evolusi lewat trade: panggil ini sesudah Pokemon ini ditukar (di game
+## single-player, "trade" bisa disimulasikan misal lewat NPC penukar atau
+## mesin trade -- fungsi inilah yang menjalankan evolusinya).
+## Return pesan buat UI -- array kosong kalau Pokemon ini bukan evolusi trade.
+func evolve_by_trade() -> Array[String]:
+	var messages: Array[String] = []
+	if not can_evolve_by_trade():
+		return messages
+	var old_name: String = get_display_name()
+	var new_species: PokemonSpecies = species.evolves_into
+	_apply_evolution(new_species)
+	messages.append("%s berevolusi jadi %s!" % [old_name, new_species.species_name])
+	return messages
