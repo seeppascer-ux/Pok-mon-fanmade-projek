@@ -1,0 +1,11 @@
+# Godot 4
+.godot/
+*.import
+*.uid
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backup
+*~
