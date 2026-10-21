@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://71lb5iechwye" path="res://data/species/pokemon_species.gd" id="1"]
 [ext_resource type="Script" uid="uid://c5ihjx1t6jj3s" path="res://data/abilities/ability_data.gd" id="1_t22xn"]
 [ext_resource type="Resource" uid="uid://dwsnu7da0wea2" path="res://data/moves/ember.tres" id="2"]
-[ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
+[ext_resource type="Resource" uid="uid://d0aqpvwfwlv7g" path="res://data/moves/leer.tres" id="3"]
 [ext_resource type="Texture2D" uid="uid://cg83jv1m6enow" path="res://asset/pokemon/front/CHARIZARD.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://cq5307iykbx84" path="res://asset/pokemon/back/CHARIZARD.png" id="5"]
 [ext_resource type="Resource" path="res://data/abilities/blaze.tres" id="6"]

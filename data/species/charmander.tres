@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://d2dk67rexsb8x" path="res://data/moves/level_up_move.gd" id="8"]
 [ext_resource type="Resource" uid="uid://ovw3l7lvgb8k" path="res://data/moves/scratch.tres" id="9"]
 [ext_resource type="Resource" uid="uid://lctaha2vjc7b" path="res://data/moves/growl.tres" id="10"]
-[ext_resource type="Resource" path="res://data/moves/leer.tres" id="11"]
+[ext_resource type="Resource" uid="uid://d0aqpvwfwlv7g" path="res://data/moves/leer.tres" id="11"]
 [ext_resource type="Resource" uid="uid://c5vdy1u6ekdue" path="res://data/species/charmeleon.tres" id="12"]
 [ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="13_yuxux"]
 
