@@ -13,6 +13,8 @@ signal fled() ## player berhasil kabur (RUN) -- battle selesai tanpa menang/kala
 signal move_used(is_player: bool) ## dipancarkan pas attacker mulai pakai move, buat trigger animasi
 signal captured(instance: PokemonInstance) ## dipancarkan begitu Poke Ball berhasil nangkap Pokemon liar
 signal exp_gained(amount: int, old_exp: int, old_level: int, new_level: int) ## EXP sudah di-apply; UI pakai ini buat animasi bar + efek naik level
+signal request_player_switch(forced: bool) ## UI harus buka panel party: forced=true wajib pilih pengganti (habis pingsan, tanpa tombol batal), false = ganti sukarela (boleh batal)
+signal pokemon_switched() ## Pokemon player sudah bertukar; UI refresh nama/level/HP/sprite/tombol move
 
 const TURN_DELAY: float = 0.6
 const MESSAGE_DELAY: float = 0.55
@@ -20,13 +22,28 @@ const MESSAGE_DELAY: float = 0.55
 var player_mon: BattleMon
 var enemy_mon: BattleMon
 
+## Seluruh party player. player_mon selalu = BattleMon baru membungkus
+## party[player_party_index] -- stat stage otomatis ke-reset tiap ganti
+## (standar game resmi), sementara status condition tetap menempel karena
+## tersimpan di PokemonInstance-nya sendiri.
+var party: Array[PokemonInstance] = []
+var player_party_index: int = 0
+
 var _battle_over: bool = false
+var _awaiting_switch: bool = false ## true = lagi nunggu player pilih pengganti (mode wajib habis pingsan)
+var _switch_forced: bool = false ## true = ganti gratis habis pingsan; false = ganti sukarela memakan giliran
 
 
-func start_battle(player_instance: PokemonInstance, enemy_instance: PokemonInstance) -> void:
-	player_mon = BattleMon.new(player_instance)
+## party_player: seluruh party (minimal 1 yang hidup; kalau semuanya pingsan
+## defensif dipakai index 0). Yang pertama hidup langsung dikirim bertarung.
+func start_battle(p_party: Array[PokemonInstance], enemy_instance: PokemonInstance) -> void:
+	party = p_party
+	player_party_index = _first_alive_index()
+	player_mon = BattleMon.new(party[player_party_index])
 	enemy_mon = BattleMon.new(enemy_instance)
 	_battle_over = false
+	_awaiting_switch = false
+	_switch_forced = false
 
 	_update_hp_signals()
 	message.emit("Pokemon liar %s muncul!" % enemy_mon.get_display_name())
@@ -354,9 +371,89 @@ func _check_faint() -> bool:
 		return true
 	if player_mon.is_fainted():
 		message.emit("%s pingsan!" % player_mon.get_display_name())
-		_end_battle(false)
+		if _has_alive_party_member():
+			# Belum kalah -- player WAJIB pilih pengganti (ganti gratis,
+			# musuh tidak menyerang). Battle lanjut di player_switch_to().
+			_awaiting_switch = true
+			_switch_forced = true
+			request_player_switch.emit(true)
+		else:
+			# Seluruh party pingsan -> baru kalah.
+			_end_battle(false)
 		return true
 	return false
+
+
+## Index party pertama yang masih hidup (defensif: 0 kalau semua pingsan).
+func _first_alive_index() -> int:
+	for i in party.size():
+		if not party[i].is_fainted():
+			return i
+	return 0
+
+
+## true kalau masih ada anggota party yang hidup (termasuk yang bertarung).
+func _has_alive_party_member() -> bool:
+	for mon in party:
+		if not mon.is_fainted():
+			return true
+	return false
+
+
+## ---------------------------------------------------------------------
+## GANTI POKEMON
+## ---------------------------------------------------------------------
+
+## Dipanggil UI begitu player memilih Pokemon dari panel party.
+## Dua mode, ditentukan flag internal:
+## - Mode wajib (_awaiting_switch, habis pingsan): ganti GRATIS, musuh TIDAK
+##   menyerang, lalu giliran player dimulai lagi.
+## - Mode sukarela (dari tombol Pokemon di menu utama): ganti MEMAKAN
+##   giliran -- musuh menyerang setelah ganti, persis kayak game resmi.
+## UI seharusnya sudah mencegah pilihan tak valid (pingsan / sedang
+## bertarung); validasi di sini cuma pengaman lapis kedua.
+func player_switch_to(index: int) -> void:
+	if _battle_over:
+		return
+	if index < 0 or index >= party.size():
+		return
+	if index == player_party_index:
+		return
+	if party[index].is_fainted():
+		return
+	var free_switch: bool = _awaiting_switch and _switch_forced
+	_awaiting_switch = false
+	_switch_forced = false
+	await _do_switch(index, free_switch)
+
+
+func _do_switch(index: int, free_switch: bool) -> void:
+	var old_name: String = player_mon.get_display_name()
+	message.emit("Kembali, %s!" % old_name)
+	await get_tree().create_timer(MESSAGE_DELAY).timeout
+
+	player_party_index = index
+	# BattleMon baru = semua stat stage ke-reset (standar game resmi);
+	# status condition tetap menempel karena tersimpan di instance.
+	player_mon = BattleMon.new(party[index])
+	_update_hp_signals()
+	pokemon_switched.emit()
+	message.emit("Ayo, %s!" % player_mon.get_display_name())
+	await get_tree().create_timer(TURN_DELAY).timeout
+
+	if free_switch:
+		_start_player_turn()
+		return
+
+	# Ganti sukarela memakan giliran: musuh menyerang setelah ganti.
+	var enemy_move_index: int = _enemy_choose_move_index()
+	if enemy_move_index != -1:
+		await _execute_move(enemy_mon, player_mon, enemy_move_index, false)
+		if _check_faint():
+			return
+
+	await get_tree().create_timer(0.3).timeout
+	_start_player_turn()
 
 
 func _end_battle(player_won: bool) -> void:
@@ -469,8 +566,8 @@ func _calculate_catch_chance(target: PokemonInstance, ball: ItemData) -> float:
 ## ---------------------------------------------------------------------
 
 ## Dipanggil dari UI begitu player pakai item non-Poke-Ball ke "target"
-## (biasanya player_mon.instance, karena belum ada UI ganti Pokemon lain
-## di party -- lihat BACA_FITUR_BARU_2.txt). Item-nya sendiri dikurangi
+## (biasanya player_mon.instance = yang sedang bertarung; item belum bisa
+## dipakai ke Pokemon cadangan di party). Item-nya sendiri dikurangi
 ## dari "bag" DI SINI, cuma kalau efeknya beneran kepakai (misal Potion ke
 ## Pokemon yang HP-nya sudah penuh TIDAK memakan item).
 func player_use_item(item: ItemData, target: PokemonInstance, bag: Bag) -> void:

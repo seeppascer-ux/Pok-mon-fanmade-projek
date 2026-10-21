@@ -30,4 +30,5 @@ func _ready() -> void:
 
 	var battle_scene: BattleUI = preload("res://scene/battle_ui.tscn").instantiate()
 	add_child(battle_scene)
-	battle_scene.start(player_pokemon, enemy_pokemon)
+	var party: Array[PokemonInstance] = [player_pokemon]
+	battle_scene.start(party, enemy_pokemon)

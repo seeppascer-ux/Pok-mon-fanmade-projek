@@ -10,20 +10,22 @@ signal battle_ended(player_won: bool)
 ## party sudah penuh).
 signal pokemon_captured(instance: PokemonInstance)
 
-## Root scene battle. Tinggal isi player_pokemon & enemy_pokemon (lewat
-## Inspector atau lewat kode sebelum node ini _ready), scene ini yang urus
-## sisanya: nyambungin BattleManager ke tombol-tombol, HP bar, sprite, dan
-## semua animasi di layar.
+## Root scene battle. Tinggal isi party & enemy (lewat Inspector atau lewat
+## kode sebelum node ini _ready), scene ini yang urus sisanya: nyambungin
+## BattleManager ke tombol-tombol, HP bar, sprite, dan semua animasi di layar.
 
 @export var player_pokemon: PokemonInstance
 @export var enemy_pokemon: PokemonInstance
+## Seluruh party player (dipakai panel Ganti). player_pokemon selalu sinkron
+## dengan anggota party yang sedang bertarung.
+var party: Array[PokemonInstance] = []
 ## Tas item player. Boleh dikosongkan (tombol Tas cuma bakal bilang
 ## "Tas kosong") -- diisi lewat Inspector (drag res://data/starter_bag.tres
 ## atau Bag punya sendiri) atau lewat start() dari world.gd.
 @export var bag: Bag
 
 ## State tombol/panel di area bawah layar. Cuma satu yang kelihatan tiap saat.
-enum BottomState { MESSAGE, MAIN_MENU, MOVE_MENU, BAG_MENU }
+enum BottomState { MESSAGE, MAIN_MENU, MOVE_MENU, BAG_MENU, PARTY_MENU }
 
 const HP_GREEN: Color = Color8(24, 192, 32)
 const HP_YELLOW: Color = Color8(248, 176, 0)
@@ -71,6 +73,13 @@ const EXP_TWEEN_TIME: float = 0.7
 var bag_menu: PanelContainer
 var bag_list_vbox: VBoxContainer
 
+## Panel Ganti Pokemon -- juga dibikin lewat kode dengan pola yang sama
+## seperti bag_menu di atas (tidak perlu edit .tscn).
+var party_menu: PanelContainer
+var party_prompt: Label
+var party_list_vbox: VBoxContainer
+var party_back_button: Button
+
 var battle_manager: BattleManager
 var _move_buttons: Array[Button] = []
 var _message_tween: Tween
@@ -90,6 +99,8 @@ func _ready() -> void:
 	battle_manager.move_used.connect(_on_move_used)
 	battle_manager.captured.connect(_on_captured)
 	battle_manager.exp_gained.connect(_on_exp_gained)
+	battle_manager.request_player_switch.connect(_on_request_player_switch)
+	battle_manager.pokemon_switched.connect(_on_pokemon_switched)
 
 	fight_button.pressed.connect(_on_fight_pressed)
 	bag_button.pressed.connect(_on_bag_pressed)
@@ -98,6 +109,7 @@ func _ready() -> void:
 	move_back_button.pressed.connect(_on_move_back_pressed)
 
 	_build_bag_menu()
+	_build_party_menu()
 	_setup_hp_bar_styles()
 	_setup_exp_bar_styles()
 	_style_main_menu_buttons()
@@ -105,36 +117,34 @@ func _ready() -> void:
 	message_label.text = "..."
 
 	if player_pokemon != null and enemy_pokemon != null:
-		start(player_pokemon, enemy_pokemon)
+		var init_party: Array[PokemonInstance] = [player_pokemon]
+		start(init_party, enemy_pokemon)
 
 
 ## Panggil ini dari luar (misal dari world.gd saat encounter) kalau tidak
 ## di-set lewat Inspector, contoh:
 ##   var battle_scene = preload("res://scene/battle_ui.tscn").instantiate()
 ##   add_child(battle_scene)
-##   battle_scene.start(my_party[0], wild_pokemon, my_bag)
-func start(p_player: PokemonInstance, p_enemy: PokemonInstance, p_bag: Bag = null) -> void:
-	player_pokemon = p_player
+##   battle_scene.start(my_party, wild_pokemon, my_bag)
+func start(p_party: Array[PokemonInstance], p_enemy: PokemonInstance, p_bag: Bag = null) -> void:
+	party = p_party
 	enemy_pokemon = p_enemy
 	if p_bag != null:
 		bag = p_bag
 
-	p_player.setup_default()
+	for mon in party:
+		mon.setup_default()
 	p_enemy.setup_default()
 
-	player_name_label.text = p_player.get_display_name()
-	player_level_label.text = "Lv.%d" % p_player.level
+	# BattleManager yang memilih siapa dikirim pertama (yang pertama hidup).
+	battle_manager.start_battle(party, p_enemy)
+	player_pokemon = battle_manager.player_mon.instance
+	_setup_player_side()
+
 	enemy_name_label.text = p_enemy.get_display_name()
 	enemy_level_label.text = "Lv.%d" % p_enemy.level
-
-	_set_hp_immediate(true, p_player.current_hp, p_player.max_hp())
 	_set_hp_immediate(false, p_enemy.current_hp, p_enemy.max_hp())
-	_set_exp_immediate()
-
 	_setup_sprite(enemy_sprite, p_enemy.species.get_front_display_texture(p_enemy.is_female()) if p_enemy.species != null else null)
-	_setup_sprite(player_sprite, p_player.species.get_back_display_texture(p_player.is_female()) if p_player.species != null else null)
-
-	_build_move_buttons(p_player)
 
 	# Tunggu 1 frame supaya Godot selesai hitung ukuran/posisi sprite (layout
 	# anchor) dulu sebelum animasi masuk dimainkan -- kalau langsung main
@@ -142,7 +152,19 @@ func start(p_player: PokemonInstance, p_enemy: PokemonInstance, p_bag: Bag = nul
 	await get_tree().process_frame
 	_play_entrance_animation()
 
-	battle_manager.start_battle(p_player, p_enemy)
+
+
+## Refresh seluruh sisi player (nama, level, HP, EXP, sprite, tombol move)
+## dari player_pokemon saat ini. Dipakai saat battle mulai & tiap ganti Pokemon.
+func _setup_player_side() -> void:
+	if player_pokemon == null:
+		return
+	player_name_label.text = player_pokemon.get_display_name()
+	player_level_label.text = "Lv.%d" % player_pokemon.level
+	_set_hp_immediate(true, player_pokemon.current_hp, player_pokemon.max_hp())
+	_set_exp_immediate()
+	_setup_sprite(player_sprite, player_pokemon.species.get_back_display_texture(player_pokemon.is_female()) if player_pokemon.species != null else null)
+	_build_move_buttons(player_pokemon)
 
 
 func _setup_sprite(sprite: TextureRect, texture: Texture2D) -> void:
@@ -231,6 +253,142 @@ func _refresh_bag_list() -> void:
 		btn.pressed.connect(_on_bag_item_pressed.bind(slot.item))
 		_apply_solid_button_style(btn, Color8(70, 150, 214))
 		bag_list_vbox.add_child(btn)
+
+
+## ---------------------------------------------------------------------
+## PANEL GANTI POKEMON
+## ---------------------------------------------------------------------
+
+## Bikin panel "PartyMenu" 1x lewat kode di _ready(), pola persis seperti
+## _build_bag_menu() di atas (tidak perlu edit .tscn).
+func _build_party_menu() -> void:
+	party_menu = PanelContainer.new()
+	party_menu.name = "PartyMenu"
+	party_menu.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bottom_area.add_child(party_menu)
+
+	var margin := MarginContainer.new()
+	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
+	margin.add_theme_constant_override("margin_left", 16)
+	margin.add_theme_constant_override("margin_right", 16)
+	margin.add_theme_constant_override("margin_top", 12)
+	margin.add_theme_constant_override("margin_bottom", 12)
+	party_menu.add_child(margin)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	margin.add_child(vbox)
+
+	party_prompt = Label.new()
+	party_prompt.text = "Pilih Pokemon:"
+	party_prompt.add_theme_font_size_override("font_size", 16)
+	vbox.add_child(party_prompt)
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vbox.add_child(scroll)
+
+	party_list_vbox = VBoxContainer.new()
+	party_list_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	party_list_vbox.add_theme_constant_override("separation", 6)
+	scroll.add_child(party_list_vbox)
+
+	party_back_button = Button.new()
+	party_back_button.text = "Kembali"
+	party_back_button.custom_minimum_size = Vector2(0, 40)
+	party_back_button.pressed.connect(_on_party_back_pressed)
+	_apply_solid_button_style(party_back_button, Color8(120, 120, 130))
+	vbox.add_child(party_back_button)
+
+
+## Isi ulang daftar party. forced=true (habis pingsan): wajib pilih pengganti,
+## tombol Kembali disembunyikan. Yang pingsan & yang sedang bertarung tidak
+## bisa dipilih (tombol disabled + label status).
+func _refresh_party_list(forced: bool) -> void:
+	for child in party_list_vbox.get_children():
+		child.queue_free()
+
+	party_prompt.text = "Pilih Pokemon pengganti!" if forced else "Pilih Pokemon:"
+	party_back_button.visible = not forced
+
+	if party.is_empty():
+		var empty_label := Label.new()
+		empty_label.text = "Party kosong."
+		party_list_vbox.add_child(empty_label)
+		return
+
+	var active_index: int = battle_manager.player_party_index if battle_manager != null else 0
+	for i in party.size():
+		party_list_vbox.add_child(_build_party_row(party[i], i, i == active_index))
+
+
+func _build_party_row(mon: PokemonInstance, index: int, is_current: bool) -> Button:
+	var btn := Button.new()
+	btn.custom_minimum_size = Vector2(0, 64)
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn.pressed.connect(_on_party_member_pressed.bind(index))
+
+	var row := VBoxContainer.new()
+	row.set_anchors_preset(Control.PRESET_FULL_RECT)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	btn.add_child(row)
+
+	var top := HBoxContainer.new()
+	top.add_theme_constant_override("separation", 8)
+	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(top)
+
+	var name_label := Label.new()
+	name_label.text = "%s   Lv.%d" % [mon.get_display_name(), mon.level]
+	name_label.add_theme_font_size_override("font_size", 16)
+	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	top.add_child(name_label)
+
+	var tag_label := Label.new()
+	tag_label.add_theme_font_size_override("font_size", 14)
+	tag_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if is_current:
+		tag_label.text = "[Sedang bertarung]"
+		tag_label.modulate = Color(0.6, 0.9, 1.0)
+	elif mon.is_fainted():
+		tag_label.text = "[Pingsan]"
+		tag_label.modulate = Color(1.0, 0.55, 0.5)
+	elif not mon.is_healthy():
+		tag_label.text = "[%s]" % mon.get_status_name()
+		tag_label.modulate = Color(1.0, 0.75, 0.4)
+	top.add_child(tag_label)
+
+	var hp_row := HBoxContainer.new()
+	hp_row.add_theme_constant_override("separation", 8)
+	hp_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(hp_row)
+
+	var hp_bar := ProgressBar.new()
+	hp_bar.custom_minimum_size = Vector2(160, 12)
+	hp_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hp_bar.max_value = maxi(mon.max_hp(), 1)
+	hp_bar.value = maxi(mon.current_hp, 0)
+	hp_bar.show_percentage = false
+	hp_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = _hp_color_for_ratio(float(maxi(mon.current_hp, 0)) / float(maxi(mon.max_hp(), 1)))
+	fill.set_corner_radius_all(4)
+	hp_bar.add_theme_stylebox_override("fill", fill)
+	hp_row.add_child(hp_bar)
+
+	var hp_label := Label.new()
+	hp_label.text = "%d/%d" % [maxi(mon.current_hp, 0), mon.max_hp()]
+	hp_label.add_theme_font_size_override("font_size", 14)
+	hp_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hp_row.add_child(hp_label)
+
+	var selectable: bool = not is_current and not mon.is_fainted()
+	btn.disabled = not selectable
+	if not selectable:
+		btn.modulate = Color(1, 1, 1, 0.55)
+	_apply_solid_button_style(btn, Color8(84, 180, 108) if selectable else Color8(110, 110, 120))
+
+	return btn
 
 
 func _refresh_move_button_labels() -> void:
@@ -353,6 +511,8 @@ func _set_bottom_state(state: BottomState) -> void:
 	move_menu.visible = state == BottomState.MOVE_MENU
 	if bag_menu != null:
 		bag_menu.visible = state == BottomState.BAG_MENU
+	if party_menu != null:
+		party_menu.visible = state == BottomState.PARTY_MENU
 
 
 func _set_hp_immediate(is_player: bool, current: int, max_hp: int) -> void:
@@ -490,7 +650,33 @@ func _on_bag_item_pressed(item: ItemData) -> void:
 
 
 func _on_pokemon_pressed() -> void:
-	_show_temp_message_then_menu("Tidak ada Pokemon lain di party.")
+	# Ganti sukarela dari menu utama (boleh batal via tombol Kembali).
+	_refresh_party_list(false)
+	_set_bottom_state(BottomState.PARTY_MENU)
+
+
+func _on_party_back_pressed() -> void:
+	_set_bottom_state(BottomState.MAIN_MENU)
+
+
+func _on_party_member_pressed(index: int) -> void:
+	_set_bottom_state(BottomState.MESSAGE)
+	battle_manager.player_switch_to(index)
+
+
+## Dipanggil BattleManager saat Pokemon player pingsan tapi masih ada
+## cadangan yang hidup: WAJIB pilih pengganti (tanpa tombol batal).
+func _on_request_player_switch(_forced: bool) -> void:
+	_refresh_party_list(true)
+	_set_bottom_state(BottomState.PARTY_MENU)
+
+
+## Dipanggil BattleManager begitu Pokemon berhasil bertukar: sinkronkan
+## player_pokemon lalu refresh seluruh sisi player (nama/level/HP/sprite/move).
+func _on_pokemon_switched() -> void:
+	if battle_manager != null:
+		player_pokemon = battle_manager.player_mon.instance
+	_setup_player_side()
 
 
 func _on_run_pressed() -> void:

@@ -163,15 +163,7 @@ func _start_wild_encounter(wild_instance: PokemonInstance) -> void:
 	canvas_layer.add_child(battle_scene)
 	battle_scene.battle_ended.connect(_on_battle_ended.bind(battle_scene))
 	battle_scene.pokemon_captured.connect(_on_pokemon_captured)
-	battle_scene.start(_first_alive_party_member(), wild_instance, bag)
-
-
-func _first_alive_party_member() -> PokemonInstance:
-	for mon in player_party:
-		mon.setup_default()
-		if not mon.is_fainted():
-			return mon
-	return player_party[0]
+	battle_scene.start(player_party, wild_instance, bag)
 
 
 func _on_battle_ended(_player_won: bool, battle_scene: Node) -> void:
