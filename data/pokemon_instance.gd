@@ -310,3 +310,94 @@ func evolve_by_trade() -> Array[String]:
 	_apply_evolution(new_species)
 	messages.append("%s berevolusi jadi %s!" % [old_name, new_species.species_name])
 	return messages
+
+
+## ---------------------------------------------------------------------
+## SAVE / LOAD (dipakai SaveSystem)
+## ---------------------------------------------------------------------
+
+## Serialize ke Dictionary yang aman JSON. Species disimpan sebagai
+## species_id (stabil lintas sesi), move/ability/item sebagai resource_path
+## (+ nama sebagai fallback kalau path tidak ketemu).
+func to_dict() -> Dictionary:
+	var move_paths: Array = []
+	var move_names: Array = []
+	for m in moves:
+		move_paths.append(m.resource_path)
+		move_names.append(m.move_name)
+	return {
+		"species_id": species.species_id if species != null else 0,
+		"level": level,
+		"nickname": nickname,
+		"current_hp": current_hp,
+		"exp": exp,
+		"gender": gender,
+		"nature": nature,
+		"iv": [iv_hp, iv_attack, iv_defense, iv_sp_attack, iv_sp_defense, iv_speed],
+		"ev": [ev_hp, ev_attack, ev_defense, ev_sp_attack, ev_sp_defense, ev_speed],
+		"moves": move_paths,
+		"move_names": move_names,
+		"move_pp": move_pp.duplicate(),
+		"ability": ability.resource_path if ability != null else "",
+		"ability_name": ability.ability_name if ability != null else "",
+		"status": status,
+		"sleep_turns_left": sleep_turns_left,
+	}
+
+
+## Bangun PokemonInstance dari Dictionary hasil to_dict(). Defensif:
+## key hilang -> pakai default wajar; species tidak dikenal -> return null
+## (entri dilewati pemanggil, bukan crash); move/ability tidak ketemu ->
+## dilewati / null (setup_default bisa me-roll ulang ability bila perlu).
+static func from_dict(d: Dictionary) -> PokemonInstance:
+	var species := SaveLookup.species_by_id(int(d.get("species_id", 0)))
+	if species == null:
+		push_warning("SaveSystem: species_id %s tidak dikenal, entri dilewati." % str(d.get("species_id", 0)))
+		return null
+	var inst := PokemonInstance.new()
+	inst.species = species
+	inst.level = maxi(1, int(d.get("level", 5)))
+	inst.nickname = str(d.get("nickname", ""))
+	inst.exp = maxi(0, int(d.get("exp", 0)))
+	inst.gender = int(d.get("gender", -1))
+	inst.nature = int(d.get("nature", -1))
+	var ivs: Array = d.get("iv", [])
+	if ivs.size() >= 6:
+		inst.iv_hp = int(ivs[0])
+		inst.iv_attack = int(ivs[1])
+		inst.iv_defense = int(ivs[2])
+		inst.iv_sp_attack = int(ivs[3])
+		inst.iv_sp_defense = int(ivs[4])
+		inst.iv_speed = int(ivs[5])
+	var evs: Array = d.get("ev", [])
+	if evs.size() >= 6:
+		inst.ev_hp = int(evs[0])
+		inst.ev_attack = int(evs[1])
+		inst.ev_defense = int(evs[2])
+		inst.ev_sp_attack = int(evs[3])
+		inst.ev_sp_defense = int(evs[4])
+		inst.ev_speed = int(evs[5])
+	var move_paths: Array = d.get("moves", [])
+	var move_names: Array = d.get("move_names", [])
+	var pps: Array = d.get("move_pp", [])
+	for i in range(move_paths.size()):
+		var mv := SaveLookup.move_by_path(str(move_paths[i]))
+		if mv == null and i < move_names.size():
+			mv = SaveLookup.move_by_name(str(move_names[i]))
+		if mv == null:
+			continue
+		inst.moves.append(mv)
+		var pp := mv.max_pp
+		if i < pps.size():
+			pp = clampi(int(pps[i]), 0, mv.max_pp)
+		inst.move_pp.append(pp)
+		if inst.moves.size() >= 4:
+			break
+	var ability := SaveLookup.ability_by_path(str(d.get("ability", "")))
+	if ability == null:
+		ability = SaveLookup.ability_by_name(str(d.get("ability_name", "")))
+	inst.ability = ability
+	inst.status = int(d.get("status", StatusCondition.Status.NONE))
+	inst.sleep_turns_left = maxi(0, int(d.get("sleep_turns_left", 0)))
+	inst.current_hp = clampi(int(d.get("current_hp", inst.max_hp())), 0, inst.max_hp())
+	return inst

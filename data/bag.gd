@@ -75,3 +75,37 @@ func use_stone_on(stone: ItemData, target: PokemonInstance) -> Array[String]:
 	if not messages.is_empty():
 		remove_item(stone, 1)
 	return messages
+
+
+## ---------------------------------------------------------------------
+## SAVE / LOAD (dipakai SaveSystem)
+## ---------------------------------------------------------------------
+
+## Item disimpan sebagai resource_path (+ item_name sebagai fallback).
+func to_dict() -> Dictionary:
+	var arr: Array = []
+	for slot in slots:
+		if slot == null or slot.item == null:
+			continue
+		arr.append({
+			"item_path": slot.item.resource_path,
+			"item_name": slot.item.item_name,
+			"qty": slot.quantity,
+		})
+	return {"slots": arr}
+
+
+static func from_dict(d: Dictionary) -> Bag:
+	var bag := Bag.new()
+	var arr: Array = d.get("slots", [])
+	for entry in arr:
+		if not (entry is Dictionary):
+			continue
+		var item := SaveLookup.item_by_path(str(entry.get("item_path", "")))
+		if item == null:
+			item = SaveLookup.item_by_name(str(entry.get("item_name", "")))
+		if item == null:
+			push_warning("SaveSystem: item '%s' tidak dikenal, slot dilewati." % str(entry.get("item_name", "?")))
+			continue
+		bag.add_item(item, maxi(1, int(entry.get("qty", 1))))
+	return bag

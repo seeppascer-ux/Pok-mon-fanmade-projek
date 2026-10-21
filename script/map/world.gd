@@ -34,6 +34,11 @@ const PARTY_MAX_SIZE: int = 6
 ## penangkapan berhasil (mark_caught) -- lihat data/pokedex.gd.
 @export var pokedex: Pokedex
 
+## ID map aktif, disimpan di file save. Sekarang cuma ada 1 map ("world") --
+## begitu ada map baru, pindah map WAJIB lewat notify_map_changed() supaya
+## auto-save ikut jalan.
+const MAP_ID := "world"
+
 const BATTLE_UI_SCENE: PackedScene = preload("res://scene/battle_ui.tscn")
 const PARTY_MENU_SCENE: PackedScene = preload("res://scene/party_menu.tscn")
 const POKEDEX_UI_SCENE: PackedScene = preload("res://scene/pokedex_ui.tscn")
@@ -42,6 +47,13 @@ const POKEDEX_UI_SCENE: PackedScene = preload("res://scene/pokedex_ui.tscn")
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 var _battle_active: bool = false
+## Total detik bermain run ini. Di-reset tiap run baru, dimuat dari save
+## kalau "Lanjutkan", dan ikut tersimpan di file save.
+var _playtime: float = 0.0
+
+
+func _process(delta: float) -> void:
+	_playtime += delta
 
 
 func _ready() -> void:
@@ -52,11 +64,17 @@ func _ready() -> void:
 	if pokedex == null:
 		pokedex = Pokedex.new()
 
-	# Pokemon yang sudah dipunya dari awal (starter, dst) otomatis dianggap
-	# "sudah ditangkap" di Pokedex, tanpa perlu ketemu liar dulu.
-	for mon in player_party:
-		if mon.species != null:
-			pokedex.mark_caught(mon.species)
+	# Kalau menu utama tadi memilih "Lanjutkan", SaveSystem sudah memegang
+	# data hasil load -- pakai itu dan lewati inisialisasi run baru.
+	var loaded := SaveSystem.take_pending_load()
+	if not loaded.is_empty():
+		_apply_save(loaded)
+	else:
+		# Pokemon yang sudah dipunya dari awal (starter, dst) otomatis dianggap
+		# "sudah ditangkap" di Pokedex, tanpa perlu ketemu liar dulu.
+		for mon in player_party:
+			if mon.species != null:
+				pokedex.mark_caught(mon.species)
 
 	if player.has_signal("moved"):
 		player.moved.connect(_on_player_moved)
@@ -161,6 +179,7 @@ func _on_battle_ended(_player_won: bool, battle_scene: Node) -> void:
 	_battle_active = false
 	player.set_physics_process(true)
 	_set_movement_buttons_visible(true)
+	_autosave_now()
 
 
 ## Dipanggil begitu battle_ui.gd memancarkan "pokemon_captured" (Poke Ball
@@ -172,6 +191,50 @@ func _on_pokemon_captured(instance: PokemonInstance) -> void:
 		player_party.append(instance)
 	else:
 		pc_box.deposit(instance)
+	_autosave_now()
+
+
+## Auto-save ke user://savegame.json. Dipanggil otomatis tiap battle
+## selesai, tiap menangkap Pokemon, dan tiap pindah map.
+func _autosave_now() -> void:
+	if player_party.is_empty():
+		return
+	if not SaveSystem.autosave(player_party, bag, pokedex, pc_box, MAP_ID,
+			player.position, _playtime):
+		push_warning("Auto-save gagal: %s" % SaveSystem.get_last_error())
+
+
+## Terapkan data hasil SaveSystem.load_game() (dipanggil dari _ready saat
+## "Lanjutkan"). Mercy rule: kalau semua Pokemon party pingsan (misal save
+## tepat setelah kalah battle), sembuhkan semua biar tidak soft-lock.
+func _apply_save(data: Dictionary) -> void:
+	player_party.clear()
+	var party: Array = data.get("party", [])
+	for mon in party:
+		player_party.append(mon)
+	bag = data.get("bag", bag)
+	pokedex = data.get("pokedex", pokedex)
+	pc_box = data.get("pc_box", pc_box)
+	_playtime = float(data.get("playtime", 0.0))
+	player.position = data.get("player_pos", player.position)
+	var all_fainted := true
+	for mon in player_party:
+		if not mon.is_fainted():
+			all_fainted = false
+			break
+	if all_fainted:
+		for mon in player_party:
+			mon.heal_full()
+
+
+## Hook PINDAH MAP (dipakai begitu ada map kedua, dst). Panggil fungsi ini
+## -- JANGAN set posisi manual -- supaya map & posisi tercatat dan
+## auto-save otomatis jalan sebelum transisi.
+func notify_map_changed(map_id: String, spawn_pos: Vector2) -> void:
+	player.position = spawn_pos
+	if not SaveSystem.notify_map_changed(map_id, spawn_pos, player_party,
+			bag, pokedex, pc_box, _playtime):
+		push_warning("Auto-save pindah map gagal: %s" % SaveSystem.get_last_error())
 
 
 ## Sembunyikan/tampilkan tombol arah on-screen (U/D/L/R) yang ada di

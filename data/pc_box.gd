@@ -30,3 +30,26 @@ func withdraw(instance: PokemonInstance) -> bool:
 
 func is_empty() -> bool:
 	return stored.is_empty()
+
+
+## ---------------------------------------------------------------------
+## SAVE / LOAD (dipakai SaveSystem)
+## ---------------------------------------------------------------------
+
+func to_dict() -> Dictionary:
+	var arr: Array = []
+	for mon in stored:
+		if mon != null:
+			arr.append(mon.to_dict())
+	return {"stored": arr}
+
+
+static func from_dict(d: Dictionary) -> PCBox:
+	var box := PCBox.new()
+	for entry in d.get("stored", []):
+		if not (entry is Dictionary):
+			continue
+		var mon := PokemonInstance.from_dict(entry)
+		if mon != null:
+			box.stored.append(mon)
+	return box
