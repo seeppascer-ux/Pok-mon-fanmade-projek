@@ -20,8 +20,6 @@ signal moved
 var is_moving := false
 var input_direction := Vector2.ZERO
 var facing := "down"
-## true saat dialog NPC / cutscene: player tidak bisa digerakkan.
-var input_locked := false
 
 func _ready() -> void:
 	add_to_group("player")
@@ -54,8 +52,6 @@ func _setup_camera_limits() -> void:
 	camera.limit_bottom = int(bottom_right.y)
 
 func _physics_process(_delta: float) -> void:
-	if input_locked:
-		return
 	if not is_moving and input_direction != Vector2.ZERO:
 		_try_move(input_direction)
 
@@ -67,21 +63,6 @@ func _try_move(dir: Vector2) -> void:
 		# Nabrak tembok: tetap hadap ke arah itu, tapi tidak jalan
 		_face(dir)
 		animated_sprite.play("idle_" + facing)
-		_try_talk_to_npc(target_pos)
-
-
-## Bump-to-talk: kalau kotak yang ditabrak ada NPC-nya, ajak bicara.
-func _try_talk_to_npc(target_pos: Vector2) -> void:
-	if input_locked:
-		return
-	for n in get_tree().get_nodes_in_group("npc"):
-		var npc := n as Node2D
-		if npc == null:
-			continue
-		if npc.position.distance_to(target_pos) < tile_size * 0.6:
-			if npc.has_method("interact") and not bool(npc.get("talking")):
-				npc.interact(self)
-			break
 
 func _can_move_to(target_pos: Vector2) -> bool:
 	# Gunakan collision TileMapLayer secara langsung.
@@ -116,8 +97,6 @@ func _face(dir: Vector2) -> void:
 # ------------------- Tombol UI -------------------
 
 func _on_upbutton_button_down() -> void:
-	if input_locked:
-		return
 	input_direction = Vector2.UP
 	_face(Vector2.UP)
 
@@ -126,8 +105,6 @@ func _on_upbutton_button_up() -> void:
 		input_direction = Vector2.ZERO
 
 func _on_dwbutton_button_down() -> void:
-	if input_locked:
-		return
 	input_direction = Vector2.DOWN
 	_face(Vector2.DOWN)
 
@@ -136,8 +113,6 @@ func _on_dwbutton_button_up() -> void:
 		input_direction = Vector2.ZERO
 
 func _on_lbutton_button_down() -> void:
-	if input_locked:
-		return
 	input_direction = Vector2.LEFT
 	_face(Vector2.LEFT)
 
@@ -146,8 +121,6 @@ func _on_lbutton_button_up() -> void:
 		input_direction = Vector2.ZERO
 
 func _on_rbutton_button_down() -> void:
-	if input_locked:
-		return
 	input_direction = Vector2.RIGHT
 	_face(Vector2.RIGHT)
 
