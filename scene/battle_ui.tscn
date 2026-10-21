@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b6ox12u6f4jnl"]
 
-[ext_resource type="Script" uid="uid://ocosmjjupm5n" path="res://script/battle_ui.gd" id="1"]
+[ext_resource type="Script" path="res://script/battle/battle_ui.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://duqyq32c4r3q0" path="res://asset/Battlebacks/Monte_bg.png" id="2_bg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info_panel"]
