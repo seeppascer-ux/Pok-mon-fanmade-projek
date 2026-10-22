@@ -7,6 +7,48 @@
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/EEVEE.png" id="5"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/front/EEVEE_female.png" id="6"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/EEVEE_female.png" id="7"]
+[ext_resource type="Resource" path="res://data/species/vaporeon.tres" id="8"]
+[ext_resource type="Resource" path="res://data/species/jolteon.tres" id="9"]
+[ext_resource type="Resource" path="res://data/species/flareon.tres" id="10"]
+[ext_resource type="Resource" path="res://data/moves/bite.tres" id="lmv"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="lmv_2"]
+[ext_resource type="Resource" path="res://data/moves/sand_attack.tres" id="lmv_3"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="lms"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("lms")
+level = 1
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("lms")
+level = 1
+move = ExtResource("lmv_3")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("lms")
+level = 8
+move = ExtResource("lmv_2")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("lms")
+level = 16
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM5"]
+script = ExtResource("lms")
+level = 23
+move = ExtResource("lmv_2")
+
+[sub_resource type="Resource" id="LM6"]
+script = ExtResource("lms")
+level = 30
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM7"]
+script = ExtResource("lms")
+level = 36
+move = ExtResource("lmv_2")
 
 [resource]
 script = ExtResource("1")
@@ -25,6 +67,12 @@ base_exp_yield = 65
 growth_rate = 1
 gender_ratio = 4
 starting_moves = [ExtResource("2"), ExtResource("3")]
+evolution_branches = {
+"water": ExtResource("8"),
+"thunder": ExtResource("9"),
+"fire": ExtResource("10")
+}
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4"), SubResource("LM5"), SubResource("LM6"), SubResource("LM7")]
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 125
 sprite_front_fps = 16.0

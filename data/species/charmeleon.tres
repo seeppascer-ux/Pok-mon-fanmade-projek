@@ -24,6 +24,11 @@ script = ExtResource("8")
 level = 22
 move = ExtResource("10")
 
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("8")
+level = 1
+move = ExtResource("2")
+
 [resource]
 script = ExtResource("1")
 species_id = 5
@@ -38,7 +43,7 @@ base_speed = 80
 base_exp_yield = 142
 growth_rate = 2
 starting_moves = Array[ExtResource("11_7sur6")]([ExtResource("2"), ExtResource("3")])
-level_up_moves = Array[ExtResource("8")]([SubResource("LM1"), SubResource("LM2")])
+level_up_moves = Array[ExtResource("8")]([SubResource("LM1"), SubResource("LM2"), SubResource("LM3")])
 abilities = Array[ExtResource("1_87mk0")]([ExtResource("6")])
 hidden_ability = ExtResource("7")
 evolves_into = ExtResource("11")

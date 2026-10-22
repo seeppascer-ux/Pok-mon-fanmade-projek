@@ -6,6 +6,39 @@
 [ext_resource type="Texture2D" path="res://asset/pokemon/front/VULPIX.png" id="4"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/VULPIX.png" id="5"]
 [ext_resource type="Resource" path="res://data/species/ninetales.tres" id="6"]
+[ext_resource type="Resource" path="res://data/moves/confusion.tres" id="lmv"]
+[ext_resource type="Resource" path="res://data/moves/quick_attack.tres" id="lmv_2"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="lms"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("lms")
+level = 1
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("lms")
+level = 16
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("lms")
+level = 21
+move = ExtResource("lmv_2")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("lms")
+level = 28
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM5"]
+script = ExtResource("lms")
+level = 35
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM6"]
+script = ExtResource("lms")
+level = 42
+move = ExtResource("lmv")
 
 [resource]
 script = ExtResource("1")
@@ -24,6 +57,7 @@ base_exp_yield = 60
 growth_rate = 1
 gender_ratio = 5
 starting_moves = [ExtResource("2"), ExtResource("3")]
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4"), SubResource("LM5"), SubResource("LM6")]
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 71
 sprite_front_fps = 16.0

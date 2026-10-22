@@ -8,6 +8,13 @@
 [ext_resource type="Texture2D" path="res://asset/pokemon/front/MAGIKARP_female.png" id="6"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/MAGIKARP_female.png" id="7"]
 [ext_resource type="Resource" path="res://data/species/gyarados.tres" id="8"]
+[ext_resource type="Resource" path="res://data/moves/tackle.tres" id="lmv"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="lms"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("lms")
+level = 1
+move = ExtResource("lmv")
 
 [resource]
 script = ExtResource("1")
@@ -26,6 +33,7 @@ base_exp_yield = 40
 growth_rate = 3
 gender_ratio = 3
 starting_moves = [ExtResource("2"), ExtResource("3")]
+level_up_moves = [SubResource("LM1")]
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 120
 sprite_front_fps = 16.0

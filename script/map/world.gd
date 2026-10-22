@@ -110,7 +110,7 @@ func _open_party_menu() -> void:
 		return
 	var menu: Control = PARTY_MENU_SCENE.instantiate()
 	canvas_layer.add_child(menu)
-	menu.open(player_party)
+	menu.open(player_party, bag)
 	_set_movement_buttons_visible(false)
 	menu.closed.connect(func() -> void:
 		menu.queue_free()

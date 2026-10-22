@@ -11,6 +11,11 @@
 [ext_resource type="Texture2D" uid="uid://ducgkt5vw2iiu" path="res://asset/pokemon/back/ABRA.png" id="5"]
 [ext_resource type="Resource" path="res://data/species/kadabra.tres" id="6"]
 
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("3_eqsxt")
+level = 1
+move = ExtResource("2")
+
 [resource]
 script = ExtResource("1")
 species_id = 63
@@ -27,6 +32,7 @@ catch_rate = 200
 base_exp_yield = 62
 growth_rate = 2
 starting_moves = Array[ExtResource("4_so6mq")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = [SubResource("LM1")]
 icon = ExtResource("2_kqjqe")
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 113

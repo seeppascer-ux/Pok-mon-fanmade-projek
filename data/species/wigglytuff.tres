@@ -5,6 +5,18 @@
 [ext_resource type="Resource" path="res://data/moves/growl.tres" id="3"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/front/WIGGLYTUFF.png" id="4"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/WIGGLYTUFF.png" id="5"]
+[ext_resource type="Resource" path="res://data/moves/fairy_wind.tres" id="lmv"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="lms"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("lms")
+level = 1
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("lms")
+level = 20
+move = ExtResource("lmv")
 
 [resource]
 script = ExtResource("1")
@@ -24,6 +36,7 @@ base_exp_yield = 109
 growth_rate = 0
 gender_ratio = 5
 starting_moves = [ExtResource("2"), ExtResource("3")]
+level_up_moves = [SubResource("LM1"), SubResource("LM2")]
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 109
 sprite_front_fps = 16.0

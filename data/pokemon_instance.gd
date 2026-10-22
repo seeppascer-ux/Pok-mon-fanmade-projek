@@ -278,6 +278,9 @@ func can_evolve_with_stone(stone_id: String) -> bool:
 
 ## Evolusi memakai batu evolusi (biasanya dipanggil lewat
 ## Bag.use_stone_on() supaya jumlah batunya di Tas ikut berkurang).
+## Spesies hasil dipilih lewat species.get_evolution_for_stone(): cabang
+## "evolution_branches" kalau ada (misal Eevee + Water Stone -> Vaporeon),
+## kalau tidak pakai "evolves_into" seperti biasa.
 ## Return pesan buat UI, misal ["Pikachu berevolusi jadi Raichu!"] --
 ## array kosong kalau batu ini tidak cocok buat Pokemon ini.
 func evolve_with_stone(stone_id: String) -> Array[String]:
@@ -285,7 +288,7 @@ func evolve_with_stone(stone_id: String) -> Array[String]:
 	if not can_evolve_with_stone(stone_id):
 		return messages
 	var old_name: String = get_display_name()
-	var new_species: PokemonSpecies = species.evolves_into
+	var new_species: PokemonSpecies = species.get_evolution_for_stone(stone_id)
 	_apply_evolution(new_species)
 	messages.append("%s berevolusi jadi %s!" % [old_name, new_species.species_name])
 	return messages

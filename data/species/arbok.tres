@@ -9,6 +9,44 @@
 [ext_resource type="Texture2D" uid="uid://djtr2bnhlqmyl" path="res://asset/pokemon/front/ARBOK.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://df2lxxwyone15" path="res://asset/pokemon/back/ARBOK.png" id="5"]
 [ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="7_q4yij"]
+[ext_resource type="Resource" path="res://data/moves/bite.tres" id="lmv"]
+[ext_resource type="Resource" path="res://data/moves/leer.tres" id="lmv_2"]
+[ext_resource type="Resource" path="res://data/moves/tackle.tres" id="lmv_3"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("3_dq4wc")
+level = 1
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("3_dq4wc")
+level = 1
+move = ExtResource("lmv_3")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("3_dq4wc")
+level = 1
+move = ExtResource("lmv_2")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("3_dq4wc")
+level = 10
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM5"]
+script = ExtResource("3_dq4wc")
+level = 17
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM6"]
+script = ExtResource("3_dq4wc")
+level = 27
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM7"]
+script = ExtResource("3_dq4wc")
+level = 36
+move = ExtResource("lmv")
 
 [resource]
 script = ExtResource("1")
@@ -24,6 +62,7 @@ base_speed = 80
 catch_rate = 90
 base_exp_yield = 157
 starting_moves = Array[ExtResource("7_q4yij")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4"), SubResource("LM5"), SubResource("LM6"), SubResource("LM7")]
 icon = ExtResource("2_gtg3l")
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 74

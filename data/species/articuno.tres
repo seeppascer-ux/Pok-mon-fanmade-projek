@@ -9,6 +9,27 @@
 [ext_resource type="Texture2D" uid="uid://b5it3bdimhxrx" path="res://asset/pokemon/front/ARTICUNO.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://bi8jmgbldis18" path="res://asset/pokemon/back/ARTICUNO.png" id="5"]
 [ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="7_xlx3f"]
+[ext_resource type="Resource" path="res://data/moves/powder_snow.tres" id="lmv"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("3_uqr0q")
+level = 1
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("3_uqr0q")
+level = 30
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("3_uqr0q")
+level = 51
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("3_uqr0q")
+level = 55
+move = ExtResource("lmv")
 
 [resource]
 script = ExtResource("1")
@@ -28,6 +49,7 @@ base_exp_yield = 261
 growth_rate = 3
 gender_ratio = 0
 starting_moves = Array[ExtResource("7_xlx3f")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4")]
 icon = ExtResource("2_dcr3q")
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 51

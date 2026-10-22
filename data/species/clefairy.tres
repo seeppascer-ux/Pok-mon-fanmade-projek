@@ -6,6 +6,29 @@
 [ext_resource type="Texture2D" path="res://asset/pokemon/front/CLEFAIRY.png" id="4"]
 [ext_resource type="Texture2D" path="res://asset/pokemon/back/CLEFAIRY.png" id="5"]
 [ext_resource type="Resource" path="res://data/species/clefable.tres" id="6"]
+[ext_resource type="Resource" path="res://data/moves/fairy_wind.tres" id="lmv"]
+[ext_resource type="Resource" path="res://data/moves/scratch.tres" id="lmv_2"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="lms"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("lms")
+level = 1
+move = ExtResource("lmv_2")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("lms")
+level = 1
+move = ExtResource("3")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("lms")
+level = 12
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("lms")
+level = 24
+move = ExtResource("lmv")
 
 [resource]
 script = ExtResource("1")
@@ -24,6 +47,7 @@ base_exp_yield = 68
 growth_rate = 0
 gender_ratio = 5
 starting_moves = [ExtResource("2"), ExtResource("3")]
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4")]
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 133
 sprite_front_fps = 16.0

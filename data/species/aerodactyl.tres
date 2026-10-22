@@ -9,6 +9,27 @@
 [ext_resource type="Texture2D" uid="uid://ncgo67jlloea" path="res://asset/pokemon/front/AERODACTYL.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://bp5400kf7r71p" path="res://asset/pokemon/back/AERODACTYL.png" id="5"]
 [ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="7_1qnrm"]
+[ext_resource type="Resource" path="res://data/moves/bite.tres" id="lmv"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("3_yuy5m")
+level = 1
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("3_yuy5m")
+level = 33
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("3_yuy5m")
+level = 38
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("3_yuy5m")
+level = 45
+move = ExtResource("lmv")
 
 [resource]
 script = ExtResource("1")
@@ -26,6 +47,7 @@ base_speed = 130
 base_exp_yield = 180
 growth_rate = 3
 starting_moves = Array[ExtResource("7_1qnrm")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4")]
 icon = ExtResource("2_em3qc")
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 17

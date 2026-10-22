@@ -77,6 +77,13 @@ enum GenderRatio {
 ## true kalau spesies ini berevolusi lewat trade (tukar Pokemon), misal
 ## Kadabra -> Alakazam. Diproses lewat PokemonInstance.evolve_by_trade().
 @export var evolves_by_trade: bool = false
+## Evolusi bercabang memakai batu: peta stone_id String -> PokemonSpecies,
+## misal Eevee: {"water": Vaporeon, "thunder": Jolteon, "fire": Flareon}.
+## Dipakai kalau satu field "evolution_stone"/"evolves_into" tidak cukup
+## karena satu spesies bisa berevolusi ke beberapa spesies berbeda
+## tergantung batu yang dipakai. Dictionary kosong = tidak ada cabang
+## (pakai field lama seperti biasa, JANGAN isi keduanya).
+@export var evolution_branches: Dictionary = {}
 
 @export_group("Visual")
 ## Sprite diam (fallback). Kalau field "Sprite Front/Back Sheet" di bawah
@@ -180,10 +187,26 @@ func can_evolve_at(target_level: int) -> bool:
 	return evolves_into != null and evolution_level > 0 and target_level >= evolution_level
 
 
+## Spesies hasil evolusi memakai batu dengan id "stone_id" (misal "water"
+## buat Water Stone). Mengembalikan spesies cabang dari "evolution_branches"
+## kalau batu ini ada di peta cabang; kalau tidak, pakai jalur lama
+## ("evolution_stone" cocok + "evolves_into"). Return null kalau batu ini
+## tidak cocok buat spesies ini (pemanggil harus menolak evolusi).
+func get_evolution_for_stone(stone_id: String) -> PokemonSpecies:
+	if evolution_branches.has(stone_id):
+		var branched := evolution_branches[stone_id] as PokemonSpecies
+		if branched != null:
+			return branched
+	if evolves_into != null and evolution_stone != "" and evolution_stone == stone_id:
+		return evolves_into
+	return null
+
+
 ## True kalau spesies ini berevolusi memakai batu dengan id "stone_id"
-## (misal "fire" buat Fire Stone). Lihat PokemonInstance.evolve_with_stone().
+## (misal "fire" buat Fire Stone), lewat field lama ATAU peta cabang
+## "evolution_branches". Lihat PokemonInstance.evolve_with_stone().
 func can_evolve_with_stone(stone_id: String) -> bool:
-	return evolves_into != null and evolution_stone != "" and evolution_stone == stone_id
+	return get_evolution_for_stone(stone_id) != null
 
 
 ## True kalau spesies ini berevolusi lewat trade.

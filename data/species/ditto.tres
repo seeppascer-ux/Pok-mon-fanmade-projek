@@ -6,6 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://dftv7356ww2g2" path="res://asset/pokemon/front/DITTO.png" id="4"]
 [ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="4_axtiq"]
 [ext_resource type="Texture2D" uid="uid://carsfpnigxeik" path="res://asset/pokemon/back/DITTO.png" id="5"]
+[ext_resource type="Script" path="res://data/moves/level_up_move.gd" id="lms"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("lms")
+level = 1
+move = ExtResource("2")
 
 [resource]
 script = ExtResource("1")
@@ -22,6 +28,7 @@ catch_rate = 35
 base_exp_yield = 101
 gender_ratio = 0
 starting_moves = Array[ExtResource("4_axtiq")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = [SubResource("LM1")]
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 80
 sprite_back_sheet = ExtResource("5")

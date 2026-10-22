@@ -8,6 +8,22 @@
 [ext_resource type="Texture2D" uid="uid://c60bkpplylr0e" path="res://asset/pokemon/front/CLOYSTER.png" id="2_yhgfa"]
 [ext_resource type="Resource" path="res://data/moves/leer.tres" id="3"]
 [ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="3_b88ar"]
+[ext_resource type="Resource" path="res://data/moves/powder_snow.tres" id="lmv"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("2_3ll0i")
+level = 1
+move = ExtResource("2")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("2_3ll0i")
+level = 22
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("2_3ll0i")
+level = 50
+move = ExtResource("lmv")
 
 [resource]
 script = ExtResource("1")
@@ -26,6 +42,7 @@ catch_rate = 60
 base_exp_yield = 184
 growth_rate = 3
 starting_moves = Array[ExtResource("3_b88ar")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3")]
 sprite_front_sheet = ExtResource("2_yhgfa")
 sprite_front_columns = 101
 sprite_front_fps = 30.0

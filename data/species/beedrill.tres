@@ -8,6 +8,45 @@
 [ext_resource type="Texture2D" uid="uid://b6xjtb73vd0cc" path="res://asset/pokemon/front/BEEDRILL.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://bpjmvfdvqop6n" path="res://asset/pokemon/back/BEEDRILL.png" id="5"]
 [ext_resource type="Script" uid="uid://dhvracig81p6b" path="res://data/moves/move_data.gd" id="6_4mpel"]
+[ext_resource type="Resource" path="res://data/moves/bite.tres" id="lmv"]
+[ext_resource type="Resource" path="res://data/moves/bug_bite.tres" id="lmv_2"]
+[ext_resource type="Resource" path="res://data/moves/peck.tres" id="lmv_3"]
+[ext_resource type="Resource" path="res://data/moves/poison_sting.tres" id="lmv_4"]
+
+[sub_resource type="Resource" id="LM1"]
+script = ExtResource("2_muvb4")
+level = 1
+move = ExtResource("lmv_3")
+
+[sub_resource type="Resource" id="LM2"]
+script = ExtResource("2_muvb4")
+level = 11
+move = ExtResource("lmv_3")
+
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("2_muvb4")
+level = 16
+move = ExtResource("lmv_4")
+
+[sub_resource type="Resource" id="LM4"]
+script = ExtResource("2_muvb4")
+level = 21
+move = ExtResource("lmv_2")
+
+[sub_resource type="Resource" id="LM5"]
+script = ExtResource("2_muvb4")
+level = 26
+move = ExtResource("lmv_2")
+
+[sub_resource type="Resource" id="LM6"]
+script = ExtResource("2_muvb4")
+level = 31
+move = ExtResource("lmv")
+
+[sub_resource type="Resource" id="LM7"]
+script = ExtResource("2_muvb4")
+level = 36
+move = ExtResource("lmv_2")
 
 [resource]
 script = ExtResource("1")
@@ -24,6 +63,7 @@ base_sp_defense = 80
 base_speed = 75
 base_exp_yield = 178
 starting_moves = Array[ExtResource("6_4mpel")]([ExtResource("2"), ExtResource("3")])
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3"), SubResource("LM4"), SubResource("LM5"), SubResource("LM6"), SubResource("LM7")]
 sprite_front_sheet = ExtResource("4")
 sprite_front_columns = 60
 sprite_back_sheet = ExtResource("5")

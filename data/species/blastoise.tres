@@ -21,6 +21,11 @@ script = ExtResource("8")
 level = 54
 move = ExtResource("10")
 
+[sub_resource type="Resource" id="LM3"]
+script = ExtResource("8")
+level = 1
+move = ExtResource("2")
+
 [resource]
 script = ExtResource("1")
 species_id = 9
@@ -44,7 +49,7 @@ sprite_front_fps = 16.0
 sprite_back_sheet = ExtResource("5")
 sprite_back_columns = 244
 sprite_back_fps = 16.0
-level_up_moves = [SubResource("LM1"), SubResource("LM2")]
+level_up_moves = [SubResource("LM1"), SubResource("LM2"), SubResource("LM3")]
 abilities = [ExtResource("6")]
 hidden_ability = ExtResource("7")
 evolution_level = 0
