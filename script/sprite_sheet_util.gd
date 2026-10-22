@@ -70,6 +70,7 @@ static func build_from_grid(
 
 	for i in total_frames:
 		var col: int = i % safe_columns
+		@warning_ignore("integer_division") # sengaja: butuh indeks baris bulat
 		var row: int = i / safe_columns
 
 		var frame_image: Image = sheet_image.get_region(
